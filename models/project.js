@@ -11,8 +11,15 @@ module.exports = (sequelize, type) => {
             allowNull: false,
             unique: true
         },
-        responsable: {
+        description: {
             type: type.STRING
+        },
+        status: {
+            type: type.STRING
+        },
+        id_responsable: {
+            type: type.INTEGER,
+            allowNull: false
         }
     })
 }

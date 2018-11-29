@@ -30,9 +30,6 @@ module.exports = (sequelize, type) => {
             type: type.STRING,
             allowNull: false,
             unique: true
-        },
-        id_institution: {
-            type: type.INTEGER
         }
     })
 }

@@ -23,11 +23,6 @@ module.exports = (sequelize, type) => {
         abstract: {
             type: type.STRING(1234),
             allowNull: false,
-        },
-        area: {
-            type: type.INTEGER,
         }
-        //AUTHORS
-        //RELATED AREAS
     })
 }

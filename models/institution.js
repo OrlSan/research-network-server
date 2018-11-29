@@ -1,5 +1,5 @@
 module.exports = (sequelize, type) => {
-    return sequelize.define('user', {
+    return sequelize.define('institution', {
         id: {
           type: type.INTEGER,
           primaryKey: true,
@@ -10,12 +10,16 @@ module.exports = (sequelize, type) => {
             type: type.STRING,
             allowNull: false,
         },
-        lastname: {
+        faculty: {
             type: type.STRING,
             allowNull: false,
         },
-        date_birth: {
-            type: type.DATE,
+        country: {
+            type: type.STRING,
+            allowNull: false,
+        },
+        state: {
+            type: type.STRING,
             allowNull: false,
         },
         email: {
@@ -26,13 +30,9 @@ module.exports = (sequelize, type) => {
             },
             unique: true
         },
-        profile: {
+        address: {
             type: type.STRING,
-            allowNull: false,
-            unique: true
-        },
-        id_institution: {
-            type: type.INTEGER
+            allowNull: false
         }
     })
 }

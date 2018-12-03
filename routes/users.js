@@ -1,5 +1,5 @@
 var express = require('express');
-const { User } = require('../sequelize')
+//const { User } = require('../sequelize');
 
 var router = express.Router();
 
@@ -30,7 +30,8 @@ router.route('/')
             name: user.name,
             lastname: user.lastname,
             age: user.age,
-            email: user.email
+            email: user.email,
+            profile: user.profile
         })
         .then(user => {
             res.status(201);

@@ -1,12 +1,15 @@
 // Bootstrap ORM and define relationships
 const Sequelize = require('sequelize');
-const UserModel = require('./models/user');
+const UserModel = require('./models/User');
 const InstitutionModel = require('./models/institution');
 const PublicationModel = require('./models/publication');
 const AreaModel = require('./models/area');
 const ProjectModel = require('./models/project');
-const factory = require('factory-girl').factory;
-const faker = require('faker');
+const debug = require('debug')('db');
+const path = require('path');
+const requireTree = require('require-tree');
+const DataTypes = Sequelize.DataTypes;
+
 
 // Connection to bd, user, password
 const sequelize = new Sequelize('research_network', 'kim', 'kimkim', {
@@ -42,35 +45,70 @@ User.hasMany(Project, {as: 'Projects'});
 Project.belongsToMany(User, {through: 'projects_members'});
 User.belongsToMany(Project, {through: 'projects_members'});
 
-// Force: true will drop the table if it already exists
-sequelize.sync({ force: true })
+sequelize
+  .authenticate()
   .then(() => {
-    console.log(`Database & tables created!`);
+    debug('Connection has been established successfully.');
+  })
+  .catch(err => {
+    debug('Unable to connect to the database:', err);
+  });
 
-    //Creating 10 random users
-    factory.define('user', User, {
-      name: factory.seq('User.name', (n) => faker.name.findName()),
-      lastname: factory.seq('User.lastname', (n) => faker.name.findName()),
-      date_birth: factory.seq('User.date_birth', (n) => faker.date.recent()),
-      email: factory.seq('User.email', (n) => `user${n}@ymail.com`),
-      profile: 'ADMIN'
-    });
-    console.log('date', faker.date.recent());
-    //Factory createMany persists data in db
-    factory.createMany('user', 10).
-    then(users => {
-      console.log("** Created 10 users");
-    })
-    .catch(err => {
-      console.log("Error", err);
-    });
-});
+// Force: true will drop the table if it already exists
+// sequelize.sync({ force: true })
+//   .then(() => {
+//     console.log(`Database & tables created!`);
+
+//     //Creating 10 random users
+//     factory.define('user', User, {
+//       name: factory.seq('User.name', (n) => faker.name.findName()),
+//       lastname: factory.seq('User.lastname', (n) => faker.name.findName()),
+//       date_birth: factory.seq('User.date_birth', (n) => faker.date.recent()),
+//       email: factory.seq('User.email', (n) => `user${n}@ymail.com`),
+//       profile: 'ADMIN'
+//     });
+//     //Factory createMany persists data in db
+//     // factory.createMany('user', 10).
+//     // then(users => {
+//     //   console.log("** Created 10 users");
+//     // })
+//     // .catch(err => {
+//     //   console.log("Error", err);
+//     // });
+// });
 
 
 module.exports = {
-  User,
-  Institution,
-  Publication,
-  Area,
-  Project
+  sync() {
+    const folder = path.join(process.cwd(), 'models');
+    const definitions = requireTree(folder);
+    debug(definitions);
+    global.models = {};
+    Object.keys(definitions).forEach(key => {
+      const dbModel = definitions[key](sequelize, DataTypes);
+      global[key] = dbModel;
+      models[key] = dbModel;
+      console.log('KEY', key);
+    });
+    debug(sequelize.models);
+    Object.keys(sequelize.models).forEach(key => {
+      debug(sequelize.models[key]);
+      if(sequelize.models[key].associate) sequelize.models[key].associate(sequelize.models);
+    });
+    debug(models);
+    return sequelize.sync({ force: true })
+    .catch(err => {
+      debug("Unable to sync sequelize");
+      throw err;
+    });
+  },
+  drop() {
+    debug('drop data base');
+    return sequelize.drop();
+  },
+  // User,
+  // Institution,
+  // Publication,
+  // Area,
+  // Project
 }

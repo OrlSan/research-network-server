@@ -1,9 +1,9 @@
 // Bootstrap ORM and define relationships
 const Sequelize = require('sequelize');
 const UserModel = require('./models/User');
-const InstitutionModel = require('./models/institution');
+const InstitutionModel = require('./models/Institution');
 const PublicationModel = require('./models/publication');
-const AreaModel = require('./models/area');
+const AreaModel = require('./models/Area');
 const ProjectModel = require('./models/project');
 const debug = require('debug')('db');
 const path = require('path');
@@ -27,23 +27,23 @@ const Project = ProjectModel(sequelize, Sequelize);
 
 // Associations user=author
 //One user can have an institution
-User.belongsTo(Institution);
-Institution.hasMany(User, {as: 'Members'});
-// One user can have multiple publications and a publication can have multiple users
-User.belongsToMany(Publication, {through: 'publications_authors'});
-Publication.belongsToMany(User, {through: 'publications_authors'});
-// One publication can have one area
-Publication.belongsTo(Area);
-Area.hasMany(Publication, {as: 'Publications'});
-// One publication apart from its main area is related to other areas and viceversa
-Publication.belongsToMany(Area, {through: 'publications_areas'});
-Area.belongsToMany(Publication, {through: 'publications_areas'});
-// One project belongs to an user(the owner) and one user can have multiple projects
-Project.belongsTo(User);
-User.hasMany(Project, {as: 'Projects'});
-// One project can have many members
-Project.belongsToMany(User, {through: 'projects_members'});
-User.belongsToMany(Project, {through: 'projects_members'});
+// User.belongsTo(Institution);
+// Institution.hasMany(User, {as: 'Members'});
+// // One user can have multiple publications and a publication can have multiple users
+// User.belongsToMany(Publication, {through: 'publications_authors'});
+// Publication.belongsToMany(User, {through: 'publications_authors'});
+// // One publication can have one area
+// Publication.belongsTo(Area);
+// Area.hasMany(Publication, {as: 'Publications'});
+// // One publication apart from its main area is related to other areas and viceversa
+// Publication.belongsToMany(Area, {through: 'publications_areas'});
+// Area.belongsToMany(Publication, {through: 'publications_areas'});
+// // One project belongs to an user(the owner) and one user can have multiple projects
+// Project.belongsTo(User);
+// User.hasMany(Project, {as: 'Projects'});
+// // One project can have many members
+// Project.belongsToMany(User, {through: 'projects_members'});
+// User.belongsToMany(Project, {through: 'projects_members'});
 
 sequelize
   .authenticate()

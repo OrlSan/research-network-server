@@ -16,10 +16,6 @@ module.exports = (sequelize, type) => {
         },
         status: {
             type: type.STRING
-        },
-        id_responsable: {
-            type: type.INTEGER,
-            allowNull: false
         }
     });
 

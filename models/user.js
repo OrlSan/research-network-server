@@ -32,9 +32,9 @@ module.exports = (sequelize, type) => {
     });
 
     // // One user can have an institution
-    // User.associate = models => {
-    //     return models.User.belongsTo(models.Institution);
-    // };
+    User.associate = models => {
+        return models.User.belongsTo(models.Institution);
+    };
     // // One user can have multiple publications and a publication can have multiple users
     // User.associate = models => {
     //     return models.User.belongsToMany(models.Publication, {through: 'publications_authors'});

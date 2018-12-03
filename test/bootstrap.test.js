@@ -1,5 +1,6 @@
 var assert = require('assert');
 const factory = require('factory-girl').factory;
+
 const debug = require('debug')('bootstrap');
 const should = require('should');
 
@@ -27,6 +28,7 @@ before(() => {
     factory.setAdapter(adapter);
     Object.keys(factories).forEach(key => {
       factories[key](factory);
+      console.log('KEY FACTORY', key);
     });
     factory.models = models;
     global.factory = factory;

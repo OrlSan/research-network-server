@@ -18,7 +18,10 @@ module.exports = (sequelize, type) => {
             }
         },
         is_public: {
-            type: type.INTEGER
+            type: type.INTEGER,
+            validate: { 
+                isIn: [[0, 1]]
+            }
         },
         abstract: {
             type: type.STRING(1234),

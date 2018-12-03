@@ -1,5 +1,5 @@
 module.exports = (sequelize, type) => {
-    return sequelize.define('institution', {
+    const Institution = sequelize.define('institution', {
         id: {
           type: type.INTEGER,
           primaryKey: true,
@@ -34,5 +34,12 @@ module.exports = (sequelize, type) => {
             type: type.STRING,
             allowNull: false
         }
-    })
-}
+    });
+
+    // One institution can have many users/members
+    // Institution.associate = models => {
+    //     return models.Institution.hasMany(models.User, {as: 'Members'});
+    // };
+
+    return Institution;
+};

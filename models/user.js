@@ -1,5 +1,5 @@
 module.exports = (sequelize, type) => {
-    return sequelize.define('user', {
+    const User = sequelize.define('user', {
         id: {
           type: type.INTEGER,
           primaryKey: true,
@@ -16,7 +16,6 @@ module.exports = (sequelize, type) => {
         },
         date_birth: {
             type: type.DATE,
-            allowNull: false,
         },
         email: {
             type: type.STRING,
@@ -29,7 +28,25 @@ module.exports = (sequelize, type) => {
         profile: {
             type: type.STRING,
             allowNull: false,
-            unique: true
         }
-    })
-}
+    });
+
+    // // One user can have an institution
+    // User.associate = models => {
+    //     return models.User.belongsTo(models.Institution);
+    // };
+    // // One user can have multiple publications and a publication can have multiple users
+    // User.associate = models => {
+    //     return models.User.belongsToMany(models.Publication, {through: 'publications_authors'});
+    // };
+    // // One user can be responsable of many projects
+    // User.associate = models => {
+    //     return models.User.hasMany(models.Project, {as: 'Projects'});
+    // };
+    // // One user can be member of many projects
+    // User.associate = models => {
+    //     return models.User.belongsToMany(models.Project, {through: 'projects_members'});
+    // };
+
+    return User;
+};

@@ -1,5 +1,5 @@
 module.exports = (sequelize, type) => {
-    const Project = sequelize.define('project', {
+    const Project = sequelize.define('Project', {
         id: {
           type: type.INTEGER,
           primaryKey: true,
@@ -20,13 +20,10 @@ module.exports = (sequelize, type) => {
     });
 
     // One project has one user as responsable
-    // Project.associate = models => {
-    //     return models.Project.belongsTo(models.User);
-    // };
-    // // One project can have multiple members(users) 
-    // Project.associate = models => {
-    //     return models.Project.belongsToMany(models.User, {throuh: 'projects_members'});
-    // };
+    Project.associate = models => {
+        models.Project.belongsTo(models.User);
+        models.Project.belongsToMany(models.User, {through: 'Projects_Members'});
+    };
 
     return Project;
 };

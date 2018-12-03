@@ -31,22 +31,12 @@ module.exports = (sequelize, type) => {
         }
     });
 
-    // // One user can have an institution
     User.associate = models => {
-        return models.User.belongsTo(models.Institution);
+        models.User.belongsTo(models.Institution);
+        models.User.belongsToMany(models.Publication, {through: 'Publications_Authors'});
+        models.User.hasMany(models.Project, {as: 'Projects'});
+        models.User.belongsToMany(models.Project, {through: 'Projects_Members'});
     };
-    // // One user can have multiple publications and a publication can have multiple users
-    // User.associate = models => {
-    //     return models.User.belongsToMany(models.Publication, {through: 'publications_authors'});
-    // };
-    // // One user can be responsable of many projects
-    // User.associate = models => {
-    //     return models.User.hasMany(models.Project, {as: 'Projects'});
-    // };
-    // // One user can be member of many projects
-    // User.associate = models => {
-    //     return models.User.belongsToMany(models.Project, {through: 'projects_members'});
-    // };
 
     return User;
 };

@@ -59,9 +59,9 @@ afterEach(() => {
   /**
   * Clean environment before each test
   */
-  return db.drop()
-  .then(() => {
-    return db.sync();
-  })
+//   return db.drop()
+//   .then(() => {
+//     return db.sync();
+//   })
 });
 

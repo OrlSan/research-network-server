@@ -1,5 +1,5 @@
 module.exports = (sequelize, type) => {
-    const Area = sequelize.define('area', {
+    const Area = sequelize.define('Area', {
         id: {
           type: type.INTEGER,
           primaryKey: true,
@@ -16,12 +16,10 @@ module.exports = (sequelize, type) => {
         }
     });
 
-    // Area.associate = models => {
-    //     return models.Area.hasMany(models.Publication, {as: 'Publications'});
-    // };
-    // Area.associate = models => {
-    //     return models.Area.belongsToMany(models.Publication, {through: 'publications_areas'});
-    // };
+    Area.associate = models => {
+        models.Area.hasMany(models.Publication, {as: 'Publications'});
+        models.Area.belongsToMany(models.Publication, {through: 'Publications_Areas'});
+    };
 
     return Area;
 };

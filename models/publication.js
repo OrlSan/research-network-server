@@ -1,5 +1,5 @@
 module.exports = (sequelize, type) => {
-    const Publication = sequelize.define('publication', {
+    const Publication = sequelize.define('Publication', {
         id: {
           type: type.INTEGER,
           primaryKey: true,
@@ -28,16 +28,12 @@ module.exports = (sequelize, type) => {
             allowNull: false,
         }
     });
-
-    // Publication.associate = models => {
-    //     return models.Publication.belongsToMany(models.User, {through: 'publications_authors'});
-    // };
-    // Publication.associate = models => {
-    //     return models.Publication.belongsTo(models.Area);
-    // };
-    // Publication.associate = models => {
-    //     return models.Publication.belongsToMany(models.Area, {through: 'publications_areas'});
-    // };
+    
+    Publication.associate = models => {
+        models.Publication.belongsToMany(models.User, {through: 'Publications_Authors'});
+        models.Publication.belongsTo(models.Area);
+        models.Publication.belongsToMany(models.Area, {through: 'Publications_Areas'});
+    };
 
     return Publication;
 };

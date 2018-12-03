@@ -50,7 +50,7 @@ db.sync()
     });
 })
 .catch((err) => {
-    debug("Databse not syncronized");
+    debug("Database not syncronized");
     debug(err);
     throw err;
 });

@@ -1,5 +1,4 @@
 var express = require('express');
-//const { User } = require('../sequelize');
 
 var router = express.Router();
 

@@ -8,14 +8,14 @@ router.route('/')
             .then(users => res.json(users))
     })
     .post((req, res) => {
-        console.log('REQ.BODY', req.body);
         const user = req.body.user;
         User.create({
             name: user.name,
             lastname: user.lastname,
             age: user.age,
             email: user.email,
-            profile: user.profile
+            profile: user.profile,
+            InstitutionId: user.institution_id
         })
         .then(user => {
             res.status(201);
@@ -28,9 +28,12 @@ router.route('/')
                 errors.push(element.message);
             }); 
             res.status(400).send({ error: errors });
-        } )
+        })
         .catch(err => {
             console.log("ERR", err);
+            if (err.name === 'SequelizeDatabaseError') {
+                res.status(409).send({ error: err});
+            }
             res.status(500).send({ error: 'something blew up' });
         });
     });

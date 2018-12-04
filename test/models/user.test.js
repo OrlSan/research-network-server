@@ -2,19 +2,27 @@ var assert = require('assert');
 const should = require('should');
 describe('\n\n________________________USER________________________', () => {
   describe('\n--------------Validations on creation--------------\n', () => {
-    describe('Create valid user', () => {
-      it('should create valid user with required properties', () => {
-        return factory.create('user')
-        .then(userCreated => {
-          userCreated.should.be.not.empty();
-          userCreated.should.be.an.Object();
-          userCreated.should.have.property('id');
-          userCreated.should.have.property('name');
-          userCreated.should.have.property('lastname');
-          userCreated.should.have.property('date_birth');
-          userCreated.should.have.property('email');
-          userCreated.should.have.property('profile');
-        });
+    let user;
+    it('should create valid user with required properties', () => {
+      return factory.create('user')
+      .then(userCreated => {
+        user = userCreated;
+        userCreated.should.be.not.empty();
+        userCreated.should.be.an.Object();
+        userCreated.should.have.property('id');
+        userCreated.should.have.property('name');
+        userCreated.should.have.property('lastname');
+        userCreated.should.have.property('date_birth');
+        userCreated.should.have.property('email');
+        userCreated.should.have.property('profile');
+      });
+    });
+    it('should find user created', () => {
+      user = user.dataValues;
+      return User.findOne({ where: { id: user.id }}).then(userFinded => {
+        userFinded.should.be.an.Object();
+        userFinded.should.be.not.empty();
+        userFinded.should.have.property('name', user.name);
       });
     });
   });

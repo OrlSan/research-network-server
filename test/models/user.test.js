@@ -1,7 +1,7 @@
 var assert = require('assert');
 const should = require('should');
 describe('\n\n________________________USER________________________', () => {
-  describe('\n--------------Validations on creation--------------\n', () => {
+  describe('\n--------------Validations on creation---------------\n', () => {
     let user;
     it('should create valid user with required properties', () => {
       return factory.create('user')
@@ -28,46 +28,49 @@ describe('\n\n________________________USER________________________', () => {
   });
 
   describe('\n--------------Validations on associations--------------\n', () => {
-    var institution;
-    var user;
-    before(() => {
-      return Promise.all([
-        factory.create('institution'),
-        factory.create('user'),
-      ]).then(result => {
-        institution = result[0];
-        user = result[1];
-        return user.setInstitution(institution);
+    describe('\n- - - - - - Associations with institutions - - - - - - \n', () => {
+      let institution;
+      let user;
+      before(() => {
+        return Promise.all([
+          factory.create('institution'),
+          factory.create('user'),
+        ]).then(result => {
+          institution = result[0];
+          user = result[1];
+          return user.setInstitution(institution);
+        });
       });
-    });
-    describe('Find user with specific institution', () => {
-      it('should find user with specific associated institution', () => {
-        return User.findOne({ where: { id: user.dataValues.id }}).then(user => {
-          user = user.dataValues;
-          user.should.be.an.Object();
-          user.should.be.not.empty();
-          user.should.have.property('InstitutionId', institution.dataValues.id);
+      describe('Find user with specific institution', () => {
+        it('should find user with specific associated institution', () => {
+          return User.findOne({ where: { id: user.dataValues.id }}).then(foundUser => {
+            foundUser.should.be.an.Object();
+            foundUser.should.be.not.empty();
+            foundUser.should.have.property('InstitutionId', institution.dataValues.id);
+          });
         });
       });
     });
-    var publications;
-    var user2;
-    before(() => {
-      return Promise.all([
-        factory.createMany('publication', 3),
-        factory.create('user'),
-      ]).then(result => {
-        publications = result[0];
-        user2 = result[1];
-        return user2.addPublications(publications);
+    describe('\n- - - - - - Associations with publications - - - - - - \n', () =>{
+      let publications;
+      let user;
+      before(() => {
+        return Promise.all([
+          factory.createMany('publication', 3),
+          factory.create('user'),
+        ]).then(result => {
+          publications = result[0];
+          user = result[1];
+          return user.addPublications(publications);
+        });
       });
-    });
-    describe('Find publications of specific user', () => {
-      it('should find publications of specific user', () => {
-        return user2.getPublications().then(publications => {
-          publications.should.be.not.empty();
-          publications.should.be.an.Array();
-          publications.should.have.lengthOf(3)
+      describe('Find publications of specific user', () => {
+        it('should find publications of specific user', () => {
+          return user.getPublications().then(publications => {
+            publications.should.be.not.empty();
+            publications.should.be.an.Array();
+            publications.should.have.lengthOf(3)
+          });
         });
       });
     });

@@ -36,10 +36,10 @@ module.exports = (sequelize, type) => {
     });
 
     User.associate = models => {
-        models.User.belongsTo(models.Institution);
-        models.User.belongsToMany(models.Publication, {through: 'Publications_Authors'});
-        models.User.hasMany(models.Project, {as: 'Projects'});
-        models.User.belongsToMany(models.Project, {through: 'Projects_Members'});
+        models.User.belongsTo(models.Institution); // User can have an institution
+        models.User.belongsToMany(models.Publication, {through: 'Publications_Authors'}); // User can have many publications
+        models.User.hasMany(models.Project, {as: 'MainProjects'}); // User can be representant of many projects
+        models.User.belongsToMany(models.Project, {through: 'Projects_Members'}); // User can be member of many projects
     };
 
     User.prototype.basicFormat = function basicFormat() {

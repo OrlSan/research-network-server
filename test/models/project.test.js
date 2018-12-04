@@ -1,7 +1,7 @@
 var assert = require('assert');
 const should = require('should');
-describe('\n\n________________________PROJECT________________________', () => {
-  describe('\n--------------Validations on creation--------------\n', () => {
+describe('\n\n______________________PROJECT________________', () => {
+  describe('\n--------------Validations on creation------\n', () => {
     let project;
     it('should create valid project with required properties', () => {
       return factory.create('project')
@@ -25,7 +25,7 @@ describe('\n\n________________________PROJECT________________________', () => {
     });
   });
 
-  describe('\n--------------Validations on associations--------------\n', () => {
+  describe('\n--------------Validations on associations--------\n', () => {
     var user;
     var project;
     before(() => {

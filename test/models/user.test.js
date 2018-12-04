@@ -51,7 +51,7 @@ describe('\n\n________________________USER________________________', () => {
         });
       });
     });
-    describe('\n- - - - - - Associations with publications - - - - - - \n', () =>{
+    describe('\n- - - - - - Associations with publications - - - - - - \n', () => {
       let publications;
       let user;
       before(() => {
@@ -70,6 +70,29 @@ describe('\n\n________________________USER________________________', () => {
             publications.should.be.not.empty();
             publications.should.be.an.Array();
             publications.should.have.lengthOf(3)
+          });
+        });
+      });
+    });
+    describe('\n - - Associations with projects - - \n', () => {
+      let projects;
+      let user;
+      before(() => {
+        return Promise.all([
+          factory.createMany('project', 3),
+          factory.create('user', {name:'kim'}),
+        ]).then(result => {
+          projects = result[0];
+          user = result[1];
+          return user.addProjects(projects);
+        });
+      });
+      describe('Find projects where user is member', () => {
+        it('should find projects where user is member', () => {
+          return user.getProjects().then(projects => {
+            projects.should.be.not.empty();
+            projects.should.be.an.Array();
+            projects.should.have.lengthOf(3)
           });
         });
       });

@@ -19,10 +19,10 @@ describe('\n\n________________________USER________________________', () => {
     });
     it('should find user created', () => {
       user = user.dataValues;
-      return User.findOne({ where: { id: user.id }}).then(userFinded => {
-        userFinded.should.be.an.Object();
-        userFinded.should.be.not.empty();
-        userFinded.should.have.property('name', user.name);
+      return User.findOne({ where: { id: user.id }}).then(foundUser => {
+        foundUser.should.be.an.Object();
+        foundUser.should.be.not.empty();
+        foundUser.should.have.property('name', user.name);
       });
     });
   });

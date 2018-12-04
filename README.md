@@ -9,3 +9,7 @@ Run `npm install`
 ## Running
 
 Run `npm start`
+
+## Running tests
+
+Run `npm test`

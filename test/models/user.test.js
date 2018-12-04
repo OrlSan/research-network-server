@@ -3,7 +3,6 @@ const should = require('should');
 describe('\n\n________________________USER__________________', () => {
  
     beforeEach(() => {
-        console.log('BEFORE voy a crear');
         return factory.createMany('user', 10).
         then(users => {
           console.log("** Created 10 users");
@@ -19,7 +18,7 @@ describe('\n\n________________________USER__________________', () => {
           users.should.be.not.empty();
           users.forEach(result => {
             let user = result.toJSON();
-            user.should.have.keys('name', 'lastname');
+            user.should.have.keys('name', 'lastname', 'date_birth', 'email', 'profile');
           });
         });
       });

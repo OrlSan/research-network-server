@@ -1,5 +1,5 @@
 var express = require('express');
-
+const Sequelize = require('sequelize');
 var router = express.Router();
 
 router.route('/')
@@ -10,21 +10,6 @@ router.route('/')
     .post((req, res) => {
         console.log('REQ.BODY', req.body);
         const user = req.body.user;
-        if (!user) {
-            return res.status(400).json({ Error: "Missing user" });
-        }
-        if (!user.name) {
-            return res.status(400).json({ Error: "Missing user.name" });
-        }
-        if (!user.lastname) {
-            return res.status(400).json({ Error: "Missing user.lastname" });
-        }
-        if (!user.email) {
-            return res.status(400).json({ Error: "Missing user.email" });
-        }
-        if (!user.age) {
-            return res.status(400).json({ Error: "Missing user.age" });
-        }
         User.create({
             name: user.name,
             lastname: user.lastname,
@@ -36,6 +21,14 @@ router.route('/')
             res.status(201);
             res.json(user);
         })
+        .catch( Sequelize.ValidationError, err => {
+            console.log('SUPER ERROR', err);
+            var errors = [];
+            err.errors.forEach(element => {
+                errors.push(element.message);
+            }); 
+            res.status(400).send({ error: errors });
+        } )
         .catch(err => {
             console.log("ERR", err);
             res.status(500).send({ error: 'something blew up' });

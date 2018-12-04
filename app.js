@@ -1,6 +1,6 @@
 const debug = require('debug')('bootstrap');
 const should = require('should');
-const db = require('./sequelize');
+const db = require('./db');
 
 db.sync()
 .then(() => {

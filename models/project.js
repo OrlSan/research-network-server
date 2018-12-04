@@ -19,7 +19,6 @@ module.exports = (sequelize, type) => {
         }
     });
 
-    // One project has one user as responsable
     Project.associate = models => {
         models.Project.belongsTo(models.User);
         models.Project.belongsToMany(models.User, {through: 'Projects_Members'});

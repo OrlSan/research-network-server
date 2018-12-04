@@ -28,6 +28,9 @@ module.exports = (sequelize, type) => {
         profile: {
             type: type.STRING,
             allowNull: false,
+            validate: { 
+                isIn: [['ADMIN', 'RESEARCHER', 'STUDENT']]
+            }
         }
     });
 

@@ -8,7 +8,7 @@ const should = require('should');
 /**
 * Using Sequelize
 **/
-const db = require('../sequelize');
+const db = require('../db');
 
 before(() => {
   return db.sync()
@@ -41,7 +41,7 @@ before(() => {
     var userRoutes = require('../routes/users');
 
     const app = express();
-    app.use(bodyParser.json());//Just for some express versions
+    app.use(bodyParser.json()); //Just for some express versions
     app.use('/', mainRoutes);
     app.use('/users', userRoutes);
     app.listen(3000, ()=>{

@@ -50,5 +50,26 @@ describe('\n\n________________________USER________________________', () => {
         });
       });
     });
+    var publications;
+    var user2;
+    before(() => {
+      return Promise.all([
+        factory.createMany('publication', 3),
+        factory.create('user'),
+      ]).then(result => {
+        publications = result[0];
+        user2 = result[1];
+        return user2.addPublications(publications);
+      });
+    });
+    describe('Find publications of specific user', () => {
+      it('should find publications of specific user', () => {
+        return user2.getPublications().then(publications => {
+          publications.should.be.not.empty();
+          publications.should.be.an.Array();
+          publications.should.have.lengthOf(3)
+        });
+      });
+    });
   });
 });

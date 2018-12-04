@@ -1,26 +1,46 @@
 var assert = require('assert');
 const should = require('should');
-describe('\n\n________________________USER__________________', () => {
- 
-    beforeEach(() => {
-        return factory.createMany('user', 10).
-        then(users => {
-          console.log("** Created 10 users");
-        })
-        .catch(err => {
-          console.log("Error", err);
-        });
-    });
-    describe('Find all users', () => {
-      it('should find all users', () => {
-        return User.findAll({}).then(users => {
-          users.should.be.an.Object();
-          users.should.be.not.empty();
-          users.forEach(result => {
-            let user = result.toJSON();
-            user.should.have.keys('name', 'lastname', 'date_birth', 'email', 'profile');
-          });
+describe('\n\n________________________USER________________________', () => {
+  describe('\n--------------Validations on creation--------------\n', () => {
+    describe('Create valid user', () => {
+      it('should create valid user with required properties', () => {
+        return factory.create('user')
+        .then(userCreated => {
+          userCreated.should.be.not.empty();
+          userCreated.should.be.an.Object();
+          userCreated.should.have.property('id');
+          userCreated.should.have.property('name');
+          userCreated.should.have.property('lastname');
+          userCreated.should.have.property('date_birth');
+          userCreated.should.have.property('email');
+          userCreated.should.have.property('profile');
         });
       });
     });
+  });
+
+  describe('\n--------------Validations on associations--------------\n', () => {
+    var institution;
+    var user;
+    before(() => {
+      return Promise.all([
+        factory.create('institution'),
+        factory.create('user'),
+      ]).then(result => {
+        institution = result[0];
+        user = result[1];
+        return user.setInstitution(institution);
+      });
+    });
+    describe('Find user with specific institution', () => {
+      it('should find user with specific associated institution', () => {
+        return User.findOne({ where: { id: user.dataValues.id }}).then(user => {
+          user = user.dataValues;
+          user.should.be.an.Object();
+          user.should.be.not.empty();
+          user.should.have.property('InstitutionId', institution.dataValues.id);
+        });
+      });
+    });
+  });
 });

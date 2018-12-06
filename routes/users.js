@@ -9,6 +9,9 @@ router.route('/')
     })
     .post((req, res) => {
         const user = req.body.user;
+        if (user === undefined) {
+            return res.status(400).json({Error: 'Missing user'});
+        }
         User.create({
             name: user.name,
             lastname: user.lastname,

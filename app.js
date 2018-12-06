@@ -34,6 +34,11 @@ db.sync()
     app.use('/', mainRoutes);
     app.use('/users', userRoutes);
 
+    factory.createMany('user', 10).
+    then(users => {
+        console.log('Created 10 users');
+    });
+
     // catch 404 and forward to error handler
     app.use((req, res, next) => {
         var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;

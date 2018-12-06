@@ -43,8 +43,9 @@ router.route('/')
 router.route('/:id')
     .put((req, res) => {
         const id = req.params.id;
+        const institution = req.body;
         Institution.update(
-            {name: req.body.name},
+            institution,
             {where: {id: id}}
         ).then(updated => {
             res.status(200).json(updated);

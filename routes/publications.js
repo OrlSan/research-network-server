@@ -14,9 +14,14 @@ router.route('/')
 			return res.status(400).json({ Error: 'Missing publication' });
 		}
 		const idsAuthors = publication.authors;
+		const idsAreas = publication.related_areas;
 		ModelUtils.findModelsByIds(User, idsAuthors)
 			.then(usersValidated => {
 				users = usersValidated;
+				return ModelUtils.findModelsByIds(Area, idsAreas);
+			})
+			.then(areasValidated => {
+				areas = areasValidated;
 				return Publication.create({
 					title: publication.title,
 					type: publication.type,
@@ -27,8 +32,11 @@ router.route('/')
 			})
 			.then(publication => {
 				publicationCreated = publication
-				return publication.addUsers(users);
+				return publicationCreated.addUsers(users);
 			})
+			.then(() =>{
+				return publicationCreated.addAreas(areas);
+			}) 
 			.then(() => {
 				res.status(201);
 				res.json(publicationCreated);

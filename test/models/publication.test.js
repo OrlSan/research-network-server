@@ -57,7 +57,7 @@ describe('\n\n________________________PUBLICATION________________________', () =
       before(() => {
         return Promise.all([
           factory.createMany('user', 3),
-          factory.create('project'),
+          factory.create('publication'),
         ]).then(result => {
           users = result[0];
           publication = result[1];
@@ -65,7 +65,7 @@ describe('\n\n________________________PUBLICATION________________________', () =
         });
       });
       describe('Should find authors of specific publications', () => {
-        it('should find users of specific publication', () => {
+        it('should find authors of specific publication', () => {
           return publication.getUsers().then(usersFound => {
             usersFound.should.be.not.empty();
             usersFound.should.be.an.Array();

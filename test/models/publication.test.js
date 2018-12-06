@@ -83,5 +83,37 @@ describe('\n\n________________________PUBLICATION________________________', () =
         });
       });
     });
+    describe('\n- - - - - - Associations with areas - - - - - - \n', () => {
+      let areas;
+      let publication;
+      before(() => {
+        return Promise.all([
+          factory.createMany('area', 3),
+          factory.create('publication'),
+        ]).then(result => {
+          areas = result[0];
+          publication = result[1];
+          return publication.addAreas(areas);
+        });
+      });
+      describe('Should find areas of specific publications', () => {
+        it('should find areas of specific publication', () => {
+          return publication.getAreas().then(areasFound => {
+            areasFound.should.be.not.empty();
+            areasFound.should.be.an.Array();
+            areasFound.should.have.lengthOf(3);
+            let areasIDFound = [];
+            areasFound.forEach(area => {
+              areasIDFound.push(area.dataValues.id);
+            });
+            let areasIDAdded = [];
+            areas.forEach(area => {
+              areasIDAdded.push(area.dataValues.id);
+            });
+            areasIDAdded.sort().join(',').should.be.equal(areasIDFound.sort().join(','));
+          });
+        });
+      });
+    });
   });
 });

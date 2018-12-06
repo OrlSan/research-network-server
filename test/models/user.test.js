@@ -89,10 +89,19 @@ describe('\n\n________________________USER________________________', () => {
       });
       describe('Find projects where user is member', () => {
         it('should find projects where user is member', () => {
-          return user.getProjects().then(projects => {
-            projects.should.be.not.empty();
-            projects.should.be.an.Array();
-            projects.should.have.lengthOf(3)
+          return user.getProjects().then(projectsFound => {
+            projectsFound.should.be.not.empty();
+            projectsFound.should.be.an.Array();
+            projectsFound.should.have.lengthOf(3);
+            let projectsIDFound = [];
+            projectsFound.forEach(project => {
+              projectsIDFound.push(project.dataValues.id);
+            });
+            let projectsIDAdded = [];
+            projects.forEach(project => {
+              projectsIDAdded.push(project.dataValues.id);
+            });
+            projectsIDAdded.sort().join(',').should.be.equal(projectsIDFound.sort().join(','));
           });
         });
       });

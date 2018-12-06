@@ -18,7 +18,7 @@ router.route('/')
             date_birth: user.date_birth,
             email: user.email,
             profile: user.profile,
-            InstitutionId: user.InstitutionId
+            InstitutionId: user.institution_id
         })
         .then(user => {
             res.status(201);
@@ -44,8 +44,9 @@ router.route('/')
 router.route('/:id')
     .put((req, res) => {
         const id = req.params.id;
+        const user = req.body;
         User.update(
-            {name: req.body.name},
+            user,
             {where: {id: id}}
         ).then(updated => {
             res.status(200).json(updated);

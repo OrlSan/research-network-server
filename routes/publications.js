@@ -60,17 +60,50 @@ router.route('/')
 router.route('/:id')
 	.put((req, res) => {
 		const id = req.params.id;
-		const publication = req.body;
-		Publication.update(
-			publication,
-			{ where: { id: id } }
-		)
-		.then(updated => {
-			res.status(200).json(updated);
-		})
-		.catch(err => {
-			res.status(500).json(err);
-		});
+		const publicationReq = req.body.publication;
+		const idsAuthors = publicationReq.authors;
+		const idsAreas = publicationReq.related_areas;
+
+		ModelUtils.findModelsByIds(User, idsAuthors)
+			.then(usersValidated => {
+				users = usersValidated;
+				return ModelUtils.findModelsByIds(Area, idsAreas);
+			})
+			.then(areasValidated => {
+				areas = areasValidated;
+				return Publication.update(
+						publicationReq,
+						{ where: { id: id } }
+				);
+			})
+			.then(() => {
+				return Publication.findOne({ where: { id: id }});
+			})
+			.then(publication => {
+				publicationUpdated = publication
+				return publicationUpdated.setUsers(users);
+			})
+			.then(() =>{
+				return publicationUpdated.setAreas(areas);
+			}) 
+			.then(() => {
+				res.status(201);
+				res.json(publicationCreated);
+			})
+			.catch(Sequelize.ValidationError, err => {
+				var errors = [];
+				err.errors.forEach(element => {
+					errors.push(element.message);
+				});
+				res.status(400).send({ error: errors });
+			})
+			.catch(err => {
+				console.log("ERR", err);
+				if (err.name === 'SequelizeDatabaseError') {
+					res.status(409).send({ error: err });
+				}
+				res.status(500).send({ error: 'something blew up' });
+			});
 	});
 
 router.route('/:id')

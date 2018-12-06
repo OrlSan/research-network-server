@@ -14,6 +14,7 @@ module.exports = {
       where: {id: idsArray.map((objectWithId) => {
         return objectWithId;})},
     };
+    console.log('query', query);
     return model.findAll(query).then(instances => {
         if (instances.length != idsArray.length) {
           idsFound = instances.map(elem => {return elem.id;});
@@ -26,6 +27,7 @@ module.exports = {
         return instances;
       })
       .catch(err => {
+        console.log('AQUI UN ERROR', err);
         throw new Error('notFound');
       })
   }

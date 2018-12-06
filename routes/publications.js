@@ -64,13 +64,13 @@ router.route('/:id')
 		Publication.update(
 			publication,
 			{ where: { id: id } }
-		).then(updated => {
+		)
+		.then(updated => {
 			res.status(200).json(updated);
 		})
-			.catch(err => {
-				res.status(500).json(err);
-			});;
-
+		.catch(err => {
+			res.status(500).json(err);
+		});
 	});
 
 router.route('/:id')
@@ -79,12 +79,12 @@ router.route('/:id')
 		Publication.destroy({
 			where: { id: id }
 		})
-			.then(deletedPublication => {
-				res.status(200).json(deletedPublication);
-			})
-			.catch(err => {
-				res.status(500).json(err);
-			});
+		.then(deletedPublication => {
+			res.status(200).json(deletedPublication);
+		})
+		.catch(err => {
+			res.status(500).json(err);
+		});
 	});
 
 module.exports = router;

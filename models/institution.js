@@ -41,5 +41,16 @@ module.exports = (sequelize, type) => {
         return models.Institution.hasMany(models.User, {as: 'Members'});
     };
 
+    Institution.prototype.basicFormat = function basicFormat() {
+        return {
+          name: this.name,
+          faculty: this.faculty,
+          country: this.country,
+          state: this.state,
+          email: this.email,
+          address: this.address
+        };
+    };
+
     return Institution;
 };

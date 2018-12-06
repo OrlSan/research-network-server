@@ -21,5 +21,12 @@ module.exports = (sequelize, type) => {
         models.Area.belongsToMany(models.Publication, {through: 'Publications_Areas'});
     };
 
+    Area.prototype.basicFormat = function basicFormat() {
+        return {
+          name: this.name,
+          description: this.description
+        };
+    };
+
     return Area;
 };

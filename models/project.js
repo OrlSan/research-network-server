@@ -24,5 +24,13 @@ module.exports = (sequelize, type) => {
         models.Project.belongsToMany(models.User, {through: 'Projects_Members'});
     };
 
+    Project.prototype.basicFormat = function basicFormat() {
+        return {
+          name: this.name,
+          description: this.description,
+          status: this.status
+        };
+    };
+
     return Project;
 };

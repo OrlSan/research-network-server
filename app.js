@@ -40,8 +40,7 @@ db.sync()
         console.log('URL', fullUrl);
         var err = new Error('Not Found');
         err.status = 404;
-        //next(err); 
-        res.status(404).json({ //¿CUAL ES LA DIFERENCIA ENTRE NEXT Y RES.STATUS.JSON?
+        res.status(404).json({
             msg: 'NOT FOUND'
         });
     });

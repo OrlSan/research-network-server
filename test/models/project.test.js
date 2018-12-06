@@ -1,5 +1,4 @@
-var assert = require('assert');
-const should = require('should');
+var should = require('should');
 describe('\n\n______________________PROJECT________________', () => {
   describe('\n--------------Validations on creation------\n', () => {
     let project;

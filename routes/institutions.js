@@ -4,28 +4,27 @@ var router = express.Router();
 
 router.route('/')
     .get((req, res) => {
-        User.findAll()
-        .then(users => res.json(users))
+        Institution.findAll()
+        .then(institutions => res.json(institutions))
     })
     .post((req, res) => {
-        const user = req.body.user;
-        if (user === undefined) {
-            return res.status(400).json({Error: 'Missing user'});
+        const institution = req.body.institution;
+        if (institution === undefined) {
+            return res.status(400).json({Error: 'Missing institution'});
         }
-        User.create({
-            name: user.name,
-            lastname: user.lastname,
-            date_birth: user.date_birth,
-            email: user.email,
-            profile: user.profile,
-            InstitutionId: user.InstitutionId
+        Institution.create({
+            name: institution.name,
+            faculty: institution.faculty,
+            country: institution.country,
+            email: institution.email,
+            state: institution.state,
+            address: institution.address
         })
-        .then(user => {
+        .then(institution => {
             res.status(201);
-            res.json(user);
+            res.json(institution);
         })
         .catch(Sequelize.ValidationError, err => {
-            console.log('SUPER ERROR', err);
             var errors = [];
             err.errors.forEach(element => {
                 errors.push(element.message);
@@ -44,7 +43,7 @@ router.route('/')
 router.route('/:id')
     .put((req, res) => {
         const id = req.params.id;
-        User.update(
+        Institution.update(
             {name: req.body.name},
             {where: {id: id}}
         ).then(updated => {
@@ -59,11 +58,11 @@ router.route('/:id')
 router.route('/:id')
     .delete((req, res) => {
         const id = req.params.id;
-        User.destroy({
+        Institution.destroy({
             where: { id: id }
         })
-        .then(deletedUser => {
-            res.status(200).json(deletedUser);
+        .then(deletedInstitution => {
+            res.status(200).json(deletedInstitution);
         })
         .catch(err => {
             console.log('ERR', err);

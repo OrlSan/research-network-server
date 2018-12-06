@@ -28,11 +28,14 @@ db.sync()
     const express = require('express');
     var mainRoutes = require('./routes/main');
     var userRoutes = require('./routes/users');
+    var institutionRoutes = require('./routes/institutions');
 
     const app = express();
     app.use(bodyParser.json());//Just for some express versions
     app.use('/', mainRoutes);
     app.use('/users', userRoutes);
+    app.use('/institutions', institutionRoutes);
+
 
     factory.createMany('user', 10).
     then(users => {

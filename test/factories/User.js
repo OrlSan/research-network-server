@@ -7,6 +7,6 @@ module.exports = factory => {
         date_birth: factory.seq('User.date_birth', (n) => faker.date.recent()),
         email: factory.seq('User.email', (n) => `user${n}@ymail.com`),
         profile: 'ADMIN',
-        id_institution: factory.assoc('institution', 'id')        
+        InstitutionId: factory.assoc('institution', 'id')        
     });
 };

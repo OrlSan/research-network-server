@@ -29,17 +29,22 @@ db.sync()
     var mainRoutes = require('./routes/main');
     var userRoutes = require('./routes/users');
     var institutionRoutes = require('./routes/institutions');
+    var areasRoutes = require('./routes/areas');
 
     const app = express();
     app.use(bodyParser.json());//Just for some express versions
     app.use('/', mainRoutes);
     app.use('/users', userRoutes);
     app.use('/institutions', institutionRoutes);
-
+    app.use('/areas', areasRoutes);
 
     factory.createMany('user', 10).
     then(users => {
-        console.log('Created 10 users');
+        console.log('Created 10 users\n');
+    });
+    factory.createMany('area', 10).
+    then(areas => {
+        console.log('Created 10 areas\n');
     });
 
     // catch 404 and forward to error handler

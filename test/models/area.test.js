@@ -12,6 +12,7 @@ describe('\n\n________________________AREA________________________', () => {
         areaCreated.should.have.property('id');
         areaCreated.should.have.property('name');
         areaCreated.should.have.property('image_url');
+        areaCreated.should.have.property('description');
       });
     });
     it('should find area created', () => {

@@ -13,6 +13,9 @@ module.exports = (sequelize, type) => {
         },
         image_url: {
             type: type.STRING
+        },
+        description: {
+            type: type.STRING
         }
     });
 
@@ -24,6 +27,7 @@ module.exports = (sequelize, type) => {
     Area.prototype.basicFormat = function basicFormat() {
         return {
           name: this.name,
+          image_url: this.image_url,
           description: this.description
         };
     };

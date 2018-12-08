@@ -31,6 +31,7 @@ db.sync()
 		var institutionRoutes = require('./routes/institutions');
 		var areasRoutes = require('./routes/areas');
 		var publicationsRoutes = require('./routes/publications');
+		var projectsRoutes = require('./routes/projects');
 
 		const app = express();
 		app.use(bodyParser.json());//Just for some express versions
@@ -39,6 +40,7 @@ db.sync()
 		app.use('/institutions', institutionRoutes);
 		app.use('/areas', areasRoutes);
 		app.use('/publications', publicationsRoutes);
+		app.use('/projects', projectsRoutes);
 
 
 		factory.createMany('user', 10)

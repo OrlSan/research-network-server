@@ -19,7 +19,12 @@ module.exports = (sequelize, type) => {
     });
 
     Project.associate = models => {
-        models.Project.belongsTo(models.User);
+        models.Project.belongsTo(models.User, {
+            foreignKey: {
+                field: 'id_representant',
+                allowNull: false
+            }
+        });
         models.Project.belongsToMany(models.User, {through: 'Projects_Members'});
     };
 

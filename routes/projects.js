@@ -12,6 +12,8 @@ router.route('/')
 		const project = req.body.project;
 		if (project === undefined) {
 			return res.status(400).json({ Error: 'Missing project' });
+		} else if (project.members === undefined) {
+			return res.status(400).json({ Error: 'Missing project.members' });
 		}
 		const idsMembers = project.members;
 		ModelUtils.findModelsByIds(User, idsMembers)
@@ -21,7 +23,7 @@ router.route('/')
           name: project.name,
           description: project.description,
           status: project.status,
-					UserId: project.id_responsable
+					UserId: project.id_representant
 				});
 			})
 			.then(project => {

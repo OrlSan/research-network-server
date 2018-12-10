@@ -12,10 +12,15 @@ router.route('/')
 		const publication = req.body.publication;
 		if (publication === undefined) {
 			return res.status(400).json({ Error: 'Missing publication' });
+		} else if (publication.authors === undefined) {
+			return res.status(400).json({ Error: 'Missing publication.authors' });
+		} else if (publication.related_areas === undefined) {
+			return res.status(400).json({ Error: 'Missing publication.related_areas' });
 		}
+
 		const idsAuthors = publication.authors;
 		const idsAreas = publication.related_areas;
-		ModelUtils.findModelsByIds(User, idsAuthors)
+		return ModelUtils.findModelsByIds(User, idsAuthors)
 			.then(usersValidated => {
 				users = usersValidated;
 				return ModelUtils.findModelsByIds(Area, idsAreas);

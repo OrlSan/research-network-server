@@ -38,7 +38,12 @@ module.exports = (sequelize, type) => {
     User.associate = models => {
         models.User.belongsTo(models.Institution); // User can have an institution
         models.User.belongsToMany(models.Publication, {through: 'Publications_Authors'}); // User can have many publications
-        models.User.hasMany(models.Project, {as: 'MainProjects'}); // User can be representant of many projects
+        models.User.hasMany(models.Project, {
+            foreignKey: {
+                field: 'id_representant',
+                allowNull: false
+            }
+        }); // User can be representant of many projects
         models.User.belongsToMany(models.Project, {through: 'Projects_Members'}); // User can be member of many projects
     };
 

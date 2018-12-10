@@ -56,7 +56,17 @@ router.route('/:id')
 		const projectReq = req.body.project;
 		const idsMembers = projectReq.members;
 
-		ModelUtils.findModelsByIds(User, idsMembers)
+
+		return Project.findOne({ where: { id: id }})
+			.then((result) => {
+				if (result === null) {
+					console.log(1);
+					throw new Error('NotFound');
+				} else {
+					console.log(2);
+					return ModelUtils.findModelsByIds(User, idsMembers);
+				}
+			})
 			.then(usersValidated => {
 				users = usersValidated;
 				return Project.update(
@@ -83,11 +93,13 @@ router.route('/:id')
 				res.status(400).send({ error: errors });
 			})
 			.catch(err => {
-				console.log("ERR", err);
+				if (err.message === 'NotFound') {
+					return res.status(409).send({ error: 'Id not found' });					
+				} 
 				if (err.name === 'SequelizeDatabaseError') {
-					res.status(409).send({ error: err });
+					return res.status(409).send({ error: err });
 				}
-				res.status(500).send({ error: 'something blew up' });
+				return res.status(500).send({ error: 'something blew up' });
 			});
 	});
 

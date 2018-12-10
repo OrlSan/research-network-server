@@ -18,7 +18,7 @@ router.route('/')
 			.then(usersValidated => {
 				users = usersValidated;
 				return Project.create({
-					name: project.name,
+          name: project.name,
           description: project.description,
           status: project.status,
 					UserId: project.id_responsable
@@ -71,7 +71,7 @@ router.route('/:id')
 			})
 			.then(() => {
 				res.status(201);
-				res.json(projectCreated);
+				res.json(projectUpdated);
 			})
 			.catch(Sequelize.ValidationError, err => {
 				var errors = [];

@@ -55,6 +55,9 @@ router.route('/')
 			})
 			.catch(err => {
 				console.log("ERR", err);
+				if (err.message === 'NotFound') {
+					return res.status(409).send({ error: 'Ids not found'});					
+				}
 				if (err.name === 'SequelizeDatabaseError') {
 					res.status(409).send({ error: err });
 				}
@@ -69,7 +72,14 @@ router.route('/:id')
 		const idsAuthors = publicationReq.authors;
 		const idsAreas = publicationReq.related_areas;
 
-		ModelUtils.findModelsByIds(User, idsAuthors)
+		return Publication.findOne({ where: { id: id }})
+			.then(result => {
+				if (result === null) {
+					throw new Error('NotFound');
+				} else {
+					return ModelUtils.findModelsByIds(User, idsAuthors);
+				}
+			})
 			.then(usersValidated => {
 				users = usersValidated;
 				return ModelUtils.findModelsByIds(Area, idsAreas);
@@ -103,7 +113,9 @@ router.route('/:id')
 				res.status(400).send({ error: errors });
 			})
 			.catch(err => {
-				console.log("ERR", err);
+				if (err.message === 'NotFound') {
+					return res.status(409).send({ error: 'Id not found' });					
+				} 
 				if (err.name === 'SequelizeDatabaseError') {
 					res.status(409).send({ error: err });
 				}

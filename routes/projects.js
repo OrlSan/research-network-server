@@ -62,10 +62,8 @@ router.route('/:id')
 		return Project.findOne({ where: { id: id }})
 			.then((result) => {
 				if (result === null) {
-					console.log(1);
 					throw new Error('NotFound');
 				} else {
-					console.log(2);
 					return ModelUtils.findModelsByIds(User, idsMembers);
 				}
 			})

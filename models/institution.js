@@ -34,6 +34,8 @@ module.exports = (sequelize, type) => {
             type: type.STRING,
             allowNull: false
         }
+    },  {
+        underscored: true
     });
 
     // One institution can have many users/members

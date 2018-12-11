@@ -1,10 +1,10 @@
 const debug = require('debug')('bootstrap');
-const should = require('should');
 const db = require('./db');
+const chai = require('chai');
 
 db.sync()
 	.then(() => {
-		global.should = should;
+		global.should = chai.Should();
     /**
     * Using Sequelize
     **/

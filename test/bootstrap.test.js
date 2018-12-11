@@ -4,7 +4,7 @@ const factory = require('factory-girl').factory;
 const debug = require('debug')('bootstrap');
 const should = require('should');
 
-
+const chai = require('chai');
 /**
 * Using Sequelize
 **/
@@ -13,7 +13,8 @@ const db = require('../db');
 before(() => {
   return db.sync()
   .then(() => {
-    global.should = should;
+    global.should = chai.Should();
+    //global.should = should;
     /**
     * Using Sequelize
     **/

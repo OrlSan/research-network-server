@@ -17,7 +17,10 @@ module.exports = (sequelize, type) => {
         description: {
             type: type.STRING
         }
-    });
+    }, {
+        underscored: true
+    }
+    );
 
     Area.associate = models => {
         models.Area.hasMany(models.Publication, {as: 'Publications'});

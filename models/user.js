@@ -33,6 +33,8 @@ module.exports = (sequelize, type) => {
                 isIn: [['ADMIN', 'RESEARCHER', 'STUDENT']]
             }
         }
+    }, {
+        underscored: true
     });
 
     User.associate = models => {

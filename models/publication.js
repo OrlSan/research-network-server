@@ -27,6 +27,8 @@ module.exports = (sequelize, type) => {
             type: type.STRING(1234),
             allowNull: false,
         }
+    }, {
+        underscored: true
     });
     
     Publication.associate = models => {

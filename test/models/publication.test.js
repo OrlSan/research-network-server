@@ -7,8 +7,7 @@ describe('\n\n________________________PUBLICATION________________________', () =
       return factory.create('publication')
       .then(publicationCreated => {
         publication = publicationCreated;
-        publicationCreated.should.be.not.empty();
-        publicationCreated.should.be.an.Object();
+        publicationCreated.should.be.a('object').that.is.not.empty;
         publicationCreated.should.have.property('id');
         publicationCreated.should.have.property('title');
         publicationCreated.should.have.property('type');
@@ -19,8 +18,7 @@ describe('\n\n________________________PUBLICATION________________________', () =
     it('should find publication created', () => {
       publication = publication.dataValues;
       return Publication.findOne({ where: { id: publication.id }}).then(publicationFinded => {
-        publicationFinded.should.be.an.Object();
-        publicationFinded.should.be.not.empty();
+        publicationFinded.should.be.a('object').that.is.not.empty;
         publicationFinded.should.have.property('title', publication.title);
       });
     });
@@ -44,9 +42,8 @@ describe('\n\n________________________PUBLICATION________________________', () =
         it('should find publication with specific associated area', () => {
           return Publication.findOne({ where: { id: publication.dataValues.id }}).then(publication => {
             publication = publication.dataValues;
-            publication.should.be.an.Object();
-            publication.should.be.not.empty();
-            publication.should.have.property('AreaId', area.dataValues.id);
+            publication.should.be.a('object').that.is.not.empty;
+            publication.should.have.property('area_id', area.dataValues.id);
           });
         });
       });
@@ -67,8 +64,7 @@ describe('\n\n________________________PUBLICATION________________________', () =
       describe('Should find authors of specific publications', () => {
         it('should find authors of specific publication', () => {
           return publication.getUsers().then(usersFound => {
-            usersFound.should.be.not.empty();
-            usersFound.should.be.an.Array();
+            usersFound.should.be.an('array').that.is.not.empty;
             usersFound.should.have.lengthOf(3);
             let usersIDFound = [];
             usersFound.forEach(user => {
@@ -99,8 +95,7 @@ describe('\n\n________________________PUBLICATION________________________', () =
       describe('Should find areas of specific publications', () => {
         it('should find areas of specific publication', () => {
           return publication.getAreas().then(areasFound => {
-            areasFound.should.be.not.empty();
-            areasFound.should.be.an.Array();
+            areasFound.should.be.an('array').that.is.not.empty;
             areasFound.should.have.lengthOf(3);
             let areasIDFound = [];
             areasFound.forEach(area => {

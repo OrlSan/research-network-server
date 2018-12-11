@@ -16,6 +16,8 @@ module.exports = (sequelize, type) => {
         status: {
             type: type.STRING
         }
+    }, {
+        underscored: true
     });
 
     Project.associate = models => {

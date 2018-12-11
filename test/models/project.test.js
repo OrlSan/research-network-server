@@ -6,8 +6,7 @@ describe('\n\n______________________PROJECT________________', () => {
       return factory.create('project')
       .then(projectCreated => {
         project = projectCreated;
-        projectCreated.should.be.not.empty();
-        projectCreated.should.be.an.Object();
+        projectCreated.should.be.a('object').that.is.not.empty;    
         projectCreated.should.have.property('id');
         projectCreated.should.have.property('name');
         projectCreated.should.have.property('description');
@@ -17,8 +16,7 @@ describe('\n\n______________________PROJECT________________', () => {
     it('should find project created', () => {
       project = project.dataValues;
       return Project.findOne({ where: { id: project.id }}).then(projectFinded => {
-        projectFinded.should.be.an.Object();
-        projectFinded.should.be.not.empty();
+        projectFinded.should.be.a('object').that.is.not.empty;    
         projectFinded.should.have.property('name', project.name);
       });
     });
@@ -42,9 +40,8 @@ describe('\n\n______________________PROJECT________________', () => {
         it('should find project with specific associated user', () => {
           return Project.findOne({ where: { id: project.dataValues.id }}).then(project => {
             project = project.dataValues;
-            project.should.be.an.Object();
-            project.should.be.not.empty();
-            project.should.have.property('UserId', user.dataValues.id);
+            project.should.be.a('object').that.is.not.empty;
+            project.should.have.property('user_id', user.dataValues.id);
           });
         });
       });
@@ -65,8 +62,7 @@ describe('\n\n______________________PROJECT________________', () => {
       describe('Should find members of specific project', () => {
         it('should find members of specific project', () => {
           return project.getUsers().then(usersFound => {
-            usersFound.should.be.not.empty();
-            usersFound.should.be.an.Array();
+            usersFound.should.be.an('array').that.is.not.empty;
             usersFound.should.have.lengthOf(3);
             let usersIDFound = [];
             usersFound.forEach(user => {
@@ -84,3 +80,4 @@ describe('\n\n______________________PROJECT________________', () => {
 
   });
 });
+

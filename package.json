@@ -10,6 +10,7 @@
   "author": "Kimy",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.2.0",
     "debug": "^4.1.0",
     "express": "^4.16.4",
     "factory": "^1.0.3",

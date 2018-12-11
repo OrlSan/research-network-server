@@ -42,7 +42,9 @@ router.route('/')
 				res.status(400).send({ error: errors });
 			})
 			.catch(err => {
-				console.log("ERR", err);
+				if (err.message === 'NotFound') {
+					return res.status(409).send({ error: 'Ids not found'});					
+				} 
 				if (err.name === 'SequelizeDatabaseError') {
 					res.status(409).send({ error: err });
 				}

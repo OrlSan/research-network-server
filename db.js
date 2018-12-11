@@ -25,8 +25,6 @@ sequelize
     debug('Unable to connect to the database:', err);
   });
 
-
-
 module.exports = {
   sync() {
     const folder = path.join(process.cwd(), 'models');

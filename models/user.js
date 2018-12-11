@@ -40,7 +40,7 @@ module.exports = (sequelize, type) => {
         models.User.belongsToMany(models.Publication, {through: 'Publications_Authors'}); // User can have many publications
         models.User.hasMany(models.Project, {
             foreignKey: {
-                field: 'id_representant',
+                field: 'representant_id',
                 allowNull: false
             }
         }); // User can be representant of many projects

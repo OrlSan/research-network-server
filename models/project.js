@@ -21,7 +21,7 @@ module.exports = (sequelize, type) => {
     Project.associate = models => {
         models.Project.belongsTo(models.User, {
             foreignKey: {
-                field: 'id_representant',
+                field: 'representant_id',
                 allowNull: false
             }
         });

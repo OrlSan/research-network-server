@@ -14,9 +14,9 @@ describe('\n\n________________________AREA________________________', () => {
     });
     it('should find area created', () => {
       area = area.dataValues;
-      return Area.findOne({ where: { id: area.id }}).then(areaFinded => {
-        areaFinded.should.be.a('object').that.is.not.empty;
-        areaFinded.should.have.property('name', area.name);
+      return Area.findOne({ where: { id: area.id }}).then(foundArea => {
+        foundArea.should.be.a('object').that.is.not.empty;
+        foundArea.should.have.property('name', area.name);
       });
     });
   });

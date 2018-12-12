@@ -22,7 +22,8 @@
     "mysql2": "^1.6.4",
     "require-tree": "^1.1.1",
     "sequelize": "^4.41.1",
-    "should": "^13.2.3"
+    "should": "^13.2.3",
+    "supertest": "^3.3.0"
   },
   "devDependencies": {
     "eslint": "^5.9.0",

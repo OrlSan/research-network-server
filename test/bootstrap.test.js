@@ -14,6 +14,7 @@ before(() => {
   return db.sync()
   .then(() => {
     global.should = chai.Should();
+    global.db = db;
     //global.should = should;
     /**
     * Using Sequelize
@@ -56,13 +57,13 @@ before(() => {
   })
 });
 
-afterEach(() => {
+beforeEach(() => {
   /**
   * Clean environment before each test
   */
-//   return db.drop()
-//   .then(() => {
-//     return db.sync();
-//   })
+  // return db.drop()
+  // .then(() => {
+  //   return db.sync();
+  // })
 });
 

@@ -23,7 +23,7 @@ router.route('/')
           name: project.name,
           description: project.description,
           status: project.status,
-					UserId: project.id_representant
+					user_id: project.user_id
 				});
 			})
 			.then(project => {

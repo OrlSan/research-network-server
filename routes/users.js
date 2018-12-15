@@ -9,23 +9,25 @@ router.route('/')
 	})
 	.post((req, res) => {
 		const user = req.body.user;
-		if (user === undefined) {
+		if (user === undefined || user === null) {
 			return res.status(400).json({ Error: 'Missing user' });
 		}
 
 		return Institution.findByPk(user.institution_id)
 		.then((foundInstitution) => {
+			if (user.institution_id === undefined || foundInstitution) { // Dirty tricky ;)
+				return User.create({
+					name: user.name,
+					lastname: user.lastname,
+					date_birth: user.date_birth,
+					email: user.email,
+					profile: user.profile,
+					institution_id: user.institution_id
+				});
+			}
 			if (foundInstitution === null) {
 				throw new Error('NotFoundInstitutionId');
 			}
-			return User.create({
-				name: user.name,
-				lastname: user.lastname,
-				date_birth: user.date_birth,
-				email: user.email,
-				profile: user.profile,
-				institution_id: user.institution_id
-			});
 		})
 		.then(user => {
 			res.status(201);
@@ -58,7 +60,7 @@ router.route('/:id')
 		const id = req.params.id;
 		const user = req.body.user;
 		const institution_id = user.institution_id;
-		
+
 		return User.findOne({ where: { id: id }})
 		.then((foundUser) => {
 			if (foundUser === null) {

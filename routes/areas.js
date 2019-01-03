@@ -38,16 +38,34 @@ router.route('/')
 
 router.route('/:id')
 	.put((req, res) => {
-		const id = req.params.id;
-		const area = req.body;
-		Area.update(
-			area,
-			{ where: { id: id } }
-		)
-		.then(updated => {
-			res.status(200).json(updated);
+		const area_id = req.params.id;
+		const area = req.body.area;
+
+		return Area.findOne({where: {id: area_id}})
+		.then((foundArea => {
+			if (foundArea === null) {
+				throw new Error('NotFoundAreaId');
+			}
+			return foundArea.update(area);
+		}))
+		.then(updatedArea => {
+			res.status(200).json(updatedArea);	
+		})
+		.catch(Sequelize.ValidationError, err => {
+			var errors = [];
+			err.errors.forEach(element => {
+				errors.push(element.message);
+			});
+			res.status(400).send({ error: errors });
 		})
 		.catch(err => {
+			if (err.message == 'NotFoundAreaId') {
+				return res.status(409).send({ error: 'Area id not found' });					
+			} else if (err.message === 'NotFound') {
+				return res.status(409).send({ error: 'Id not found' });					
+			} else if (err.name === 'SequelizeDatabaseError') {
+				return res.status(409).send({ error: err });
+			}
 			res.status(500).json(err);
 		});
 	});

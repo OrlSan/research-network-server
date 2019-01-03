@@ -84,6 +84,31 @@ describe('\n\n________________________AREAS_ROUTES________________________', () 
       })
     });
   });
+  describe('\n-------------- Validations on delete ---------------\n', () => {
+    it('should delete an area', () => {
+      let area = {
+        name: "Artificial Intelligence2",
+        description: "All related to AI2",
+        image_url: "http://image.png"
+      };
+      return Area.create(area)
+      .then(createdArea => {
+        area = createdArea.dataValues;
+        return request('http://localhost:3000')
+        .delete('/areas/' + area.id)
+        .expect(204)
+      })
+      .then(response => {
+        return Area.findByPk(area.id);
+      })
+      .then(foundArea => {
+        should.not.exists(foundArea);
+      })
+
+
+     
+    });
+  });
 
  
 

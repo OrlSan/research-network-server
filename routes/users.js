@@ -110,7 +110,7 @@ router.route('/:id')
 			where: { id: id }
 		})
 		.then(deletedUser => {
-			res.status(200).json(deletedUser);
+			res.status(204).json(deletedUser);
 		})
 		.catch(err => {
 			console.log('ERR', err);

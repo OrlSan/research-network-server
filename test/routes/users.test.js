@@ -167,4 +167,32 @@ describe('\n\n________________________USERS_ROUTES________________________', () 
       }));
     });
   });
+  describe('\n-------------- Validations on delete ---------------\n', () => {
+    it('should delete an user', () => {
+      let user = {
+        name: 'Luis',
+        lastname: 'Navarro',
+        date_birth: '2018-12-12',
+        email: 'luis@asd.com',
+        profile: 'ADMIN'
+      };
+      return User.create(user)
+      .then(createdUser => {
+        user = createdUser.dataValues;
+        return request('http://localhost:3000')
+        .delete('/users/' + user.id)
+        .expect(204)
+      })
+      .then(response => {
+        return User.findByPk(user.id);
+      })
+      .then(foundUser => {
+        should.not.exists(foundUser);
+      })
+
+
+     
+    });
+  });
+
 });

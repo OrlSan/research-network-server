@@ -77,7 +77,7 @@ router.route('/:id')
 			where: { id: id }
 		})
 		.then(deletedArea => {
-			res.status(200).json(deletedArea);
+			res.status(204).json(deletedArea);
 		})
 		.catch(err => {
 			res.status(500).json(err);

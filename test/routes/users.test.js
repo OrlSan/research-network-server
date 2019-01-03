@@ -1,6 +1,6 @@
 const request = require('supertest');
 
-describe('\n\n________________________USER_ROUTES________________________', () => {
+describe('\n\n________________________USERS_ROUTES________________________', () => {
   before(() => {
     return db.drop()
     .then(() => {

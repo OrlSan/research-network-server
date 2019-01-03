@@ -43,15 +43,32 @@ router.route('/')
 router.route('/:id')
 	.put((req, res) => {
 		const id = req.params.id;
-		const institution = req.body;
-		Institution.update(
-			institution,
-			{ where: { id: id } }
-		)
-		.then(updated => {
-			res.status(200).json(updated);
+		const institution = req.body.institution;
+		return Institution.findByPk(id)
+		.then(foundInstitution => {
+			if (foundInstitution === null) {
+				throw new Error('NotFoundInstitutionId');
+			}
+			return foundInstitution.update(institution);
+		})
+		.then(updatedInstitution => {
+			res.status(200).json(updatedInstitution);
+		})
+		.catch(Sequelize.ValidationError, err => {
+			var errors = [];
+			err.errors.forEach(element => {
+				errors.push(element.message);
+			});
+			res.status(400).send({ error: errors });
 		})
 		.catch(err => {
+			if (err.message == 'NotFoundInstitutionId') {
+				return res.status(409).send({ error: 'institution_id not found' });					
+			}	else if (err.message === 'NotFound') {
+				return res.status(409).send({ error: 'Id not found' });					
+			} else if (err.name === 'SequelizeDatabaseError') {
+				return res.status(409).send({ error: err });
+			}
 			res.status(500).json(err);
 		});
 	});
@@ -63,7 +80,7 @@ router.route('/:id')
 			where: { id: id }
 		})
 		.then(deletedInstitution => {
-			res.status(200).json(deletedInstitution);
+			res.status(204).json(deletedInstitution);
 		})
 		.catch(err => {
 			console.log('ERR', err);

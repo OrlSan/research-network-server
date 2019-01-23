@@ -32,7 +32,7 @@ router.route('/')
 					type: publication.type,
 					is_public: publication.is_public,
 					abstract: publication.abstract,
-					AreaId: publication.area_id
+					area_id: publication.area_id
 				});
 			})
 			.then(publication => {

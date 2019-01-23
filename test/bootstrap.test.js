@@ -34,15 +34,17 @@ before(() => {
     var areasRoutes = require('../routes/areas');
     var institutionsRoutes = require('../routes/institutions');
     var projectsRoutes = require('../routes/projects');
+    var publicationsRoutes = require('../routes/publications');
 
     const app = express();
-    app.use(bodyParser.json()); //Just for some express versions
+    app.use(bodyParser.json());
     app.use('/', mainRoutes);
     app.use('/users', usersRoutes);
     app.use('/areas', areasRoutes);
     app.use('/institutions', institutionsRoutes);
     app.use('/projects', projectsRoutes);
-    app.listen(3000, ()=>{
+    app.use('/publications', publicationsRoutes);
+    app.listen(3000, () => {
         console.log('Express server port 3000:  \x1b[36m%s\x1b[0m', 'ONLINE');
     });
   })

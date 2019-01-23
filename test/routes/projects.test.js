@@ -107,5 +107,22 @@ describe('\n\n________________________PROJECT_ROUTES________________________', (
         usersFound.should.have.length(2);
       })
     });
-  }); 
+  });
+  describe('\n-------------- Validations on delete ---------------\n', () => {
+    it('should delete a project', () => {
+      return factory.create('project')
+      .then(createdProject => {
+        project = createdProject.dataValues;
+        return request('http://localhost:3000')
+        .delete('/projects/' + project.id)
+        .expect(204)
+      })
+      .then(response => {
+        return Project.findByPk(project.id);
+      })
+      .then(foundProject => {
+        should.not.exists(foundProject);
+      })
+    });
+  });
 });

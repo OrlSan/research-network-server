@@ -85,4 +85,21 @@ describe('\n\n________________________PUBLICATIONS_ROUTES_______________________
       })
     });
   }); 
+  describe('\n-------------- Validations on delete ---------------\n', () => {
+    it('should delete a publication', () => {
+      return factory.create('publication')
+      .then(createdPublication => {
+        publication = createdPublication.dataValues;
+        return request('http://localhost:3000')
+        .delete('/publications/' + publication.id)
+        .expect(204)
+      })
+      .then(response => {
+        return Publication.findByPk(publication.id);
+      })
+      .then(foundPublication => {
+        should.not.exists(foundPublication);
+      })
+    });
+  });
 });

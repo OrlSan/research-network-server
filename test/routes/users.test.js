@@ -189,9 +189,6 @@ describe('\n\n________________________USERS_ROUTES________________________', () 
       .then(foundUser => {
         should.not.exists(foundUser);
       })
-
-
-     
     });
   });
 

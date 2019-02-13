@@ -4,18 +4,12 @@ const db = require('./db');
 db.sync()
 	.then(() => {
 
+		const session    = require('express-session');
 		const passport = require('passport');
 		const LocalStrategy = require('passport-local').Strategy;
-		passport.use(new LocalStrategy(
-			function(username, password, done) {
-				User.findOne({ username: username }, function (err, user) {
-					if (err) { return done(err); }
-					if (!user) { return done(null, false); }
-					if (!user.verifyPassword(password)) { return done(null, false); }
-					return done(null, user);
-				});
-			}
-		));
+
+
+		global.passport = passport;		
 
 		const chai = require('chai');
 		global.should = chai.Should();
@@ -34,12 +28,14 @@ db.sync()
 		global.factory = factory;
 		const bodyParser = require('body-parser');
 		const express = require('express');
+
 		var mainRoutes = require('./routes/main');
 		var userRoutes = require('./routes/users');
 		var institutionRoutes = require('./routes/institutions');
 		var areasRoutes = require('./routes/areas');
 		var publicationsRoutes = require('./routes/publications');
 		var projectsRoutes = require('./routes/projects');
+		var authRoutes = require('./routes/auth');
 
 		const app = express();
 		app.use(bodyParser.json());//Just for some express versions
@@ -49,16 +45,57 @@ db.sync()
 		app.use('/areas', areasRoutes);
 		app.use('/publications', publicationsRoutes);
 		app.use('/projects', projectsRoutes);
+		
 
-
-		factory.createMany('user', 10)
+		factory.createMany('user', 3)
 		.then(users => {
-			console.log('Created 10 users\n');
+			console.log('Created 3 users\n');
 		});
-		factory.createMany('area', 10)
+		factory.createMany('area', 3)
 		.then(areas => {
-			console.log('Created 10 areas\n');
+			console.log('Created 3 areas\n');
 		});
+
+		// passport config
+ 		app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized:true})); // session secret
+		app.use(passport.initialize());
+		app.use(passport.session());
+
+		passport.serializeUser(function(user, done) {
+			done(null, user.id);
+		});
+
+		// used to deserialize the user
+		passport.deserializeUser(function(id, done) {
+			User.findById(id).then(function(user) {
+				if(user){
+					done(null, user.get());
+				}
+				else{
+					done(user.errors, null);
+				}
+			});
+		});
+
+		passport.use(new LocalStrategy(
+			{
+				usernameField: 'email',
+				passwordField: 'password'
+			},
+			function(email, password, done) {
+				console.log(2);
+				User.findOne({ where: { email: email}})
+				.then(user => {
+					console.log(3);
+					return done(null, user);
+				})
+				.catch(err => {
+					console.log('ERR', err);
+					return done(err);
+				});
+			}
+		));
+		app.use('/login', authRoutes);
 
 		// catch 404 and forward to error handler
 		app.use((req, res, next) => {

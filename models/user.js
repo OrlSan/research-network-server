@@ -25,7 +25,11 @@ module.exports = (sequelize, type) => {
                 isEmail: true
             },
             unique: true
-        },    
+        },
+        password: {
+            type: type.STRING,
+            allowNull: false,
+        },
         profile: {
             type: type.STRING,
             allowNull: false,

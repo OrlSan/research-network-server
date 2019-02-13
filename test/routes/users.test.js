@@ -37,6 +37,7 @@ describe('\n\n________________________USERS_ROUTES________________________', () 
         lastname: 'Bwerwe werwer',
         date_birth: '2018-12-12',
         email: 'kima@asd.com',
+        password: '123123',
         profile: 'ADMIN'
       };
       return request('http://localhost:3000')
@@ -71,6 +72,7 @@ describe('\n\n________________________USERS_ROUTES________________________', () 
           lastname: 'Bwerwe werwer',
           date_birth: '2018-12-12',
           email: 'kimda@asd.com',
+          password: '123123',
           profile: 'ADMIN',
           institution_id : institution_id
         };
@@ -107,6 +109,7 @@ describe('\n\n________________________USERS_ROUTES________________________', () 
         lastname: 'Aqweooe weq',
         date_birth: '2018-12-12',
         email: 'kima@aso.com',
+        password: '123123',
         profile: 'ADMIN'
       };
       User.create(user)
@@ -174,6 +177,7 @@ describe('\n\n________________________USERS_ROUTES________________________', () 
         lastname: 'Navarro',
         date_birth: '2018-12-12',
         email: 'luis@asd.com',
+        password: '123123',
         profile: 'ADMIN'
       };
       return User.create(user)

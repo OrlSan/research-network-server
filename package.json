@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.js",
-    "test": "mocha --reporter spec --recursive"
+    "test": "mocha --reporter spec --recursive",
+    "test:models": "mocha test/bootstrap.test.js test/models --recursive || exit 0"
   },
   "author": "Kimy",
   "license": "ISC",

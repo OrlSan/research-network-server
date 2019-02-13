@@ -21,6 +21,7 @@ router.route('/')
 					lastname: user.lastname,
 					date_birth: user.date_birth,
 					email: user.email,
+					password: user.password,
 					profile: user.profile,
 					institution_id: user.institution_id
 				});

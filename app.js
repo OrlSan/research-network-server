@@ -3,7 +3,7 @@ const db = require('./db');
 
 db.sync()
 	.then(() => {
-
+		const cors = require("cors");
 		const session    = require('express-session');
 		const passport = require('passport');
 		const LocalStrategy = require('passport-local').Strategy;
@@ -38,6 +38,7 @@ db.sync()
 		var authRoutes = require('./routes/auth');
 
 		const app = express();
+		app.use(cors());
 		app.use(bodyParser.json());//Just for some express versions
 		app.use('/', mainRoutes);
 		app.use('/users', userRoutes);
@@ -99,6 +100,8 @@ db.sync()
 
 		// catch 404 and forward to error handler
 		app.use((req, res, next) => {
+			res.header("Access-Control-Allow-Origin", "*");
+  		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 			var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 			console.log('URL', fullUrl);
 			var err = new Error('Not Found');

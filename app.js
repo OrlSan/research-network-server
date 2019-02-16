@@ -87,8 +87,8 @@ db.sync()
 				console.log(2);
 				User.findOne({ where: { email: email}})
 				.then(user => {
-					console.log(3);
-					return done(null, user);
+					console.log(3, user.dataValues);
+					return done(null, user.dataValues);
 				})
 				.catch(err => {
 					console.log('ERR', err);

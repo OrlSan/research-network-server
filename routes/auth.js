@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
   
-router.post('/', (req, res, next) => {
+router.route('/')
+  .post((req, res, next) => {
   console.log('REQ', req.sessionID);
   return passport.authenticate(
     'local',
@@ -9,9 +10,9 @@ router.post('/', (req, res, next) => {
     (err, user, details) => {
       if (user) {
         req.login(user, function(err) {
-          res.json(user);
-          res.status(200);
-        })
+          console.log('user', user);
+          res.redirect('/users/' + user.id);
+        });
       }
     })(req, res, next)
 });

@@ -58,7 +58,7 @@ db.sync()
 		});
 
 		// passport config
- 		app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized:true})); // session secret
+ 		app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized:false, cookie: { maxAge: 60000 }})); // session secret
 		app.use(passport.initialize());
 		app.use(passport.session());
 
@@ -68,7 +68,7 @@ db.sync()
 
 		// used to deserialize the user
 		passport.deserializeUser(function(id, done) {
-			User.findById(id).then(function(user) {
+			User.findByPk(id).then(function(user) {
 				if(user){
 					done(null, user.get());
 				}
@@ -84,10 +84,8 @@ db.sync()
 				passwordField: 'password'
 			},
 			function(email, password, done) {
-				console.log(2);
 				User.findOne({ where: { email: email}})
 				.then(user => {
-					console.log(3, user.dataValues);
 					return done(null, user.dataValues);
 				})
 				.catch(err => {
@@ -97,6 +95,9 @@ db.sync()
 			}
 		));
 		app.use('/login', authRoutes);
+
+		
+		
 
 		// catch 404 and forward to error handler
 		app.use((req, res, next) => {

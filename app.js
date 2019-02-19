@@ -7,7 +7,7 @@ db.sync()
 		const session    = require('express-session');
 		const passport = require('passport');
 		const LocalStrategy = require('passport-local').Strategy;
-
+		var cookieParser = require('cookie-parser');
 
 		global.passport = passport;		
 
@@ -58,30 +58,39 @@ db.sync()
 		});
 
 		// passport config
- 		app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized:false, cookie: { maxAge: 60000 }})); // session secret
+		app.use(cookieParser('keyboard cat'));
+ 		app.use(session({
+			 secret: 'keyboard cat',
+			 saveUninitialized: true,
+			 resave: false,
+			 cookie: {
+				 httpOnly: true
+			}})); // session secret
 		app.use(passport.initialize());
 		app.use(passport.session());
 
 		passport.serializeUser(function(user, done) {
-			done(null, user.id);
+			// done(null, user.id);
+			done(null, user);
 		});
 
 		// used to deserialize the user
 		passport.deserializeUser(function(id, done) {
-			User.findByPk(id).then(function(user) {
-				if(user){
-					done(null, user.get());
-				}
-				else{
-					done(user.errors, null);
-				}
-			});
+			done(null, user);
+			// User.findByPk(id).then(function(user) {
+			// 	if(user){
+			// 		done(null, user.get());
+			// 	}
+			// 	else{
+			// 		done(user.errors, null);
+			// 	}
+			// });
 		});
 
 		passport.use(new LocalStrategy(
 			{
 				usernameField: 'email',
-				passwordField: 'password'
+				passwordField: 'password',
 			},
 			function(email, password, done) {
 				User.findOne({ where: { email: email}})
@@ -101,6 +110,7 @@ db.sync()
 
 		// catch 404 and forward to error handler
 		app.use((req, res, next) => {
+			res.locals.user = req.user || null;
 			res.header("Access-Control-Allow-Origin", "*");
   		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 			var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;

@@ -2,10 +2,9 @@ var express = require('express');
 var Sequelize = require('sequelize');
 var router = express.Router();
 
-var isAuthenticated = function (req, res, next) {
-	console.log('REQ SESSION2', req.session);
-	console.log('REQ ISAUTHENTICATED', req.isAuthenticated());
-	if (req.isAuthenticated()) {
+var isAuthenticated =  (req, res, next)=> {
+	console.log('\nREQ.user', req.user);
+	if (req.user || req.isAuthenticated()) {
 		return next();
 	} else {
 		res.status(401).json({
@@ -14,7 +13,7 @@ var isAuthenticated = function (req, res, next) {
 	} 
 };
 
-router.get('/:id', (req,res) => {
+router.get('/:id', isAuthenticated, (req, res, next) => {
 	User.findByPk(req.params.id)
 		.then(users => res.json(users))
 });

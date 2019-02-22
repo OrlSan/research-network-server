@@ -7,6 +7,8 @@ db.sync()
 		const session    = require('express-session');
 		const passport = require('passport');
 		const LocalStrategy = require('passport-local').Strategy;
+		const BearerStrategy = require('passport-http-bearer').Strategy;
+
 		var cookieParser = require('cookie-parser');
 
 		global.passport = passport;		
@@ -103,6 +105,24 @@ db.sync()
 				});
 			}
 		));
+
+		passport.use(new BearerStrategy(
+			function(token, done) {
+				if (token == 'asd') {
+					//@TODO findOne by token
+					User.findOne({ where: { email: 'user2@ymail.com'}})
+					.then(user => {
+						return done(null, user.dataValues);
+					})
+					.catch(err => {
+						console.log('ERR', err);
+						return done(err);
+					});
+				}
+				return done(null, null);
+			}
+		));
+
 		app.use('/login', authRoutes);
 
 		

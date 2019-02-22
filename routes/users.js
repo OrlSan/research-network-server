@@ -3,8 +3,7 @@ var Sequelize = require('sequelize');
 var router = express.Router();
 
 var isAuthenticated =  (req, res, next)=> {
-	console.log('\nREQ.user', req.user);
-	if (req.user || req.isAuthenticated()) {
+	if (req.isAuthenticated()) {
 		return next();
 	} else {
 		res.status(401).json({

@@ -14,7 +14,7 @@ module.exports = (sequelize, type) => {
             type: type.STRING,
             allowNull: false
         },
-        date_birth: {
+        dateBirth: {
             type: type.DATE,
             allowNull: false
         },
@@ -52,6 +52,8 @@ module.exports = (sequelize, type) => {
         }); // User can be representant of many projects
         models.User.belongsToMany(models.Project, {through: 'Projects_Members'}); // User can be member of many projects
     };
+
+    //@TODO create checkPassword
 
     User.prototype.basicFormat = function basicFormat() {
         return {

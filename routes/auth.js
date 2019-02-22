@@ -3,27 +3,22 @@ var router = express.Router();
   
 router.route('/')
   .post((req, res, next) => {
-  console.log('REQ SESSION1', req.sessionID);
   return passport.authenticate(
-    'local',
-    {session: true}, 
+    'bearer',
     (err, user, details) => {
-      if (user) {
-        console.log('REQ SESSION2', req.sessionID);
-        console.log('REQ SESSION2', req.session.passport);
-        req.login(user, function(err) {
-          console.log('user', user);
-          console.log('REQ SESSION3', req.sessionID);
-          console.log('REQ SESSION3', req.session.passport);
-          req.user = user;
-          console.log('REQ USER1', req.user);
-          // req.session.save(function(){
-            //return res.json({});
-            return res.redirect('/users/' + user.id);
-          // });
-          //return res.redirect('/users/' + user.id);
-        });
-      }
+      console.log('BODY', req.body);
+      let email = req.body.email;
+      let password = req.body.password;
+      // create token field on users table
+      //@TODO generate token
+      // update to user table 
+      // set to token
+      User.findOne({ where: { email: email, password: password}})
+		  .then(user => {
+        user.token = 'asd';
+        res.json(user);
+      });
+      
     })(req, res, next)
 });
 module.exports = router;

@@ -14,7 +14,7 @@ module.exports = (sequelize, type) => {
             type: type.STRING,
             allowNull: false
         },
-        dateBirth: {
+        date_birth: {
             type: type.DATE,
             allowNull: false
         },
@@ -29,6 +29,9 @@ module.exports = (sequelize, type) => {
         password: {
             type: type.STRING,
             allowNull: false,
+        },
+        token: {
+            type: type.STRING
         },
         profile: {
             type: type.STRING,

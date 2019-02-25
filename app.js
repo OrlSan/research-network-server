@@ -41,7 +41,7 @@ db.sync()
 
 		const app = express();
 		app.use(cors());
-		app.use(bodyParser.json());//Just for some express versions
+		app.use(bodyParser.json());
 		app.use('/', mainRoutes);
 		app.use('/users', userRoutes);
 		app.use('/institutions', institutionRoutes);
@@ -108,25 +108,21 @@ db.sync()
 
 		passport.use(new BearerStrategy(
 			function(token, done) {
-				if (token == 'asd') {
+				console.log('TOKEN', token);
 					//@TODO findOne by token
-					User.findOne({ where: { email: 'user2@ymail.com'}})
-					.then(user => {
-						return done(null, user.dataValues);
-					})
-					.catch(err => {
-						console.log('ERR', err);
-						return done(err);
-					});
-				}
+				User.findOne({ where: { token: token }})
+				.then(user => {
+					return done(null, user.dataValues);
+				})
+				.catch(err => {
+					console.log('ERR', err);
+					return done(err);
+				});
 				return done(null, null);
 			}
 		));
 
 		app.use('/login', authRoutes);
-
-		
-		
 
 		// catch 404 and forward to error handler
 		app.use((req, res, next) => {

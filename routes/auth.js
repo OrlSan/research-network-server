@@ -10,15 +10,9 @@ router.route('/')
   return passport.authenticate(
     'bearer',
     (err, user, details) => {
-      console.log('BODY', req.body);
       let email = req.body.email;
       let password = req.body.password;
       const randomToken = randomID();
-      console.log('randomToken', randomToken);
-      // create token field on users table
-      //@TODO generate token
-      // update to user table 
-      // set to token
       User.findOne({
         where: { 
           email: email,
@@ -37,16 +31,21 @@ router.route('/')
         }
       })
       .then(() => {
-        return User.find(
+        return User.findOne(
           { where: { 
               email: email,
               password: password
           }});
       })
       .then(user => {
-        user.token = user.token;
         res.json(user);
       })
+      .catch(err => {
+				if (err.message === 'InvalidCredentials') {
+					return res.status(401).send({ error: 'Invalid credentials'});					
+				}
+				res.status(500).send({ error: 'something blew up' });
+			});
     })(req, res, next)
 });
 module.exports = router;

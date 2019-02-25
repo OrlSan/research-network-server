@@ -3,7 +3,7 @@ var Sequelize = require('sequelize');
 var router = express.Router();
 
 var isAuthenticated =  (req, res, next)=> {
-	if (req.isAuthenticated()) {
+	if (req.isAuthenticated() || req.headers.token) {
 		return next();
 	} else {
 		res.status(401).json({
@@ -18,7 +18,7 @@ router.get('/:id', isAuthenticated, (req, res, next) => {
 });
 
 router.route('/')
-	.get((req, res) => {
+	.get(isAuthenticated, (req, res) => {
 		User.findAll()
 			.then(users => res.json(users))
 	})

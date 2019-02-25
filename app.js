@@ -49,15 +49,50 @@ db.sync()
 		app.use('/publications', publicationsRoutes);
 		app.use('/projects', projectsRoutes);
 		
+		User.create({
+			name: 'Kimberly',
+			lastname: 'BF',
+			date_birth: '2019-02-25',
+			email: 'kim@kim.com',
+			password: 'kimkim',
+			profile: 'ADMIN'
+		})
+		.then(() => {
+			console.log('Admin created');
+		});
 
-		factory.createMany('user', 3)
-		.then(users => {
-			console.log('Created 3 users\n');
+		User.create({
+			name: 'Luis',
+			lastname: 'CN',
+			date_birth: '2019-02-25',
+			email: 'luis@luis.com',
+			password: 'luisluis',
+			profile: 'RESEARCHER'
+		})
+		.then(() => {
+			console.log('Researcher created');
 		});
-		factory.createMany('area', 3)
-		.then(areas => {
-			console.log('Created 3 areas\n');
+
+		User.create({
+			name: 'Fer',
+			lastname: 'BF',
+			date_birth: '2019-02-25',
+			email: 'fer@fer.com',
+			password: 'ferfer',
+			profile: 'STUDENT'
+		})
+		.then(() => {
+			console.log('Student created');
 		});
+
+		// factory.createMany('user', 3)
+		// .then(users => {
+		// 	console.log('Created 3 users\n');
+		// });
+		// factory.createMany('area', 3)
+		// .then(areas => {
+		// 	console.log('Created 3 areas\n');
+		// });
 
 		// passport config
 		app.use(cookieParser('keyboard cat'));

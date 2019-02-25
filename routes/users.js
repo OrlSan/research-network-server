@@ -1,24 +1,15 @@
 var express = require('express');
 var Sequelize = require('sequelize');
 var router = express.Router();
+var AuthService = require('../services/AuthService');
 
-var isAuthenticated =  (req, res, next)=> {
-	if (req.isAuthenticated() || req.headers.token) {
-		return next();
-	} else {
-		res.status(401).json({
-			msg: 'Unauthorized'
-		});
-	} 
-};
-
-router.get('/:id', isAuthenticated, (req, res, next) => {
+router.get('/:id', AuthService.isAuthenticated, (req, res, next) => {
 	User.findByPk(req.params.id)
 		.then(users => res.json(users))
 });
 
 router.route('/')
-	.get(isAuthenticated, (req, res) => {
+	.get(AuthService.isAuthenticated, (req, res) => {
 		User.findAll()
 			.then(users => res.json(users))
 	})

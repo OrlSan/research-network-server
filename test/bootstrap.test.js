@@ -44,6 +44,22 @@ before(() => {
     app.use('/institutions', institutionsRoutes);
     app.use('/projects', projectsRoutes);
     app.use('/publications', publicationsRoutes);
+
+    User.create({
+      name: 'Kimberly',
+      lastname: 'BF',
+      date_birth: '2019-02-25',
+      email: 'kim@kim.com',
+      password: 'kimkim',
+      profile: 'ADMIN',
+      token: 'asadasadasdasd'
+    })
+    .then((user) => {
+      console.log('Admin created');
+      global.token = user.dataValues.token;
+      
+    });
+
     app.listen(3000, () => {
         console.log('Express server port 3000:  \x1b[36m%s\x1b[0m', 'ONLINE');
     });

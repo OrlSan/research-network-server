@@ -1,10 +1,27 @@
 const request = require('supertest');
 
 describe('\n\n________________________USERS_ROUTES________________________', () => {
+  let userLogged;
   before(() => {
     return db.drop()
     .then(() => {
-      return db.sync();
+      return db.sync()
+      .then(() => {
+        User.create({
+          name: 'Kimberly',
+          lastname: 'BF',
+          date_birth: '2019-02-25',
+          email: 'kim@kim.com',
+          password: 'kimkim',
+          profile: 'ADMIN',
+          token: 'asadasadasdasd'
+        })
+        .then((user) => {
+          console.log('Admin created');
+          userLogged = user.dataValues;
+        })
+      })  
+      ;
     })
   });
   describe('\n-------------- Validations on get ---------------\n', () => {
@@ -13,12 +30,12 @@ describe('\n\n________________________USERS_ROUTES________________________', () 
       .then(() => {
         return request('http://localhost:3000')
         .get('/users')
+        .set('token', userLogged.token)
         .expect(200)
       })
       .then((response) => {
         let users = response.body;
         users.should.be.an('array');
-        users.should.have.length(3);
         users.forEach(user => {
           user.should.have.property('id');
           user.should.have.property('name');                    

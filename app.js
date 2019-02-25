@@ -107,21 +107,12 @@ db.sync()
 		app.use(passport.session());
 
 		passport.serializeUser(function(user, done) {
-			// done(null, user.id);
 			done(null, user);
 		});
 
 		// used to deserialize the user
 		passport.deserializeUser(function(id, done) {
 			done(null, user);
-			// User.findByPk(id).then(function(user) {
-			// 	if(user){
-			// 		done(null, user.get());
-			// 	}
-			// 	else{
-			// 		done(user.errors, null);
-			// 	}
-			// });
 		});
 
 		passport.use(new LocalStrategy(

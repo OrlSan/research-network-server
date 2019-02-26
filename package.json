@@ -8,11 +8,12 @@
     "test": "mocha --reporter spec --recursive",
     "test:models": "mocha test/bootstrap.test.js test/models --recursive || exit 0",
     "test:users": "mocha test/bootstrap.test.js test/routes/users.test.js --recursive || exit 0"
-
   },
   "author": "Kimy",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.4",
+    "bcryptjs": "^2.4.3",
     "chai": "^4.2.0",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",

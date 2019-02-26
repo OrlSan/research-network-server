@@ -3,6 +3,10 @@ const db = require('./db');
 
 db.sync()
 	.then(() => {
+
+		const bcrypt = require('bcryptjs');
+    global.SALT_ROUNDS = 10;
+    global.bcrypt = bcrypt;
 		const cors = require("cors");
 		const session    = require('express-session');
 		const passport = require('passport');
@@ -48,13 +52,17 @@ db.sync()
 		app.use('/areas', areasRoutes);
 		app.use('/publications', publicationsRoutes);
 		app.use('/projects', projectsRoutes);
-		
+
+		const hashedPassword1 = bcrypt.hashSync('kimkim', SALT_ROUNDS);
+		const hashedPassword2 = bcrypt.hashSync('luisluis', SALT_ROUNDS);
+		const hashedPassword3 = bcrypt.hashSync('ferfer', SALT_ROUNDS);
+
 		User.create({
 			name: 'Kimberly',
 			lastname: 'BF',
 			date_birth: '2019-02-25',
 			email: 'kim@kim.com',
-			password: 'kimkim',
+			password: hashedPassword1,
 			profile: 'ADMIN'
 		})
 		.then(() => {
@@ -66,7 +74,7 @@ db.sync()
 			lastname: 'CN',
 			date_birth: '2019-02-25',
 			email: 'luis@luis.com',
-			password: 'luisluis',
+			password: hashedPassword2,
 			profile: 'RESEARCHER'
 		})
 		.then(() => {
@@ -78,7 +86,7 @@ db.sync()
 			lastname: 'BF',
 			date_birth: '2019-02-25',
 			email: 'fer@fer.com',
-			password: 'ferfer',
+			password: hashedPassword3,
 			profile: 'STUDENT'
 		})
 		.then(() => {

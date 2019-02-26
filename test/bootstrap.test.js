@@ -13,6 +13,9 @@ before(() => {
     global.should = chai.Should();
     global.db = db;
 
+    const bcrypt = require('bcryptjs');
+    global.SALT_ROUNDS = 10;
+    global.bcrypt = bcrypt;
     const FactoryGirl = require('factory-girl');
     const path = require('path');
     const requireTree = require('require-tree');
@@ -45,19 +48,19 @@ before(() => {
     app.use('/projects', projectsRoutes);
     app.use('/publications', publicationsRoutes);
 
+    const hashedPassword = bcrypt.hashSync('kimkim', SALT_ROUNDS);
     User.create({
       name: 'Kimberly',
       lastname: 'BF',
       date_birth: '2019-02-25',
       email: 'kim@kim.com',
-      password: 'kimkim',
+      password:  hashedPassword,
       profile: 'ADMIN',
       token: 'asadasadasdasd'
     })
     .then((user) => {
       console.log('Admin created');
       global.token = user.dataValues.token;
-      
     });
 
     app.listen(3000, () => {

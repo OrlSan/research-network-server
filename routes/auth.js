@@ -12,29 +12,36 @@ router.route('/')
     (err, user, details) => {
       let email = req.body.email;
       let password = req.body.password;
+      let foundUser;
       const randomToken = randomID();
       User.findOne({
         where: { 
-          email: email,
-          password: password
+          email: email
       }})
-      .then(result => {
-        if (result === null) {
+      .then(resultUser => {
+        foundUser = resultUser.dataValues;
+        if (foundUser === null) {
           throw new Error('InvalidCredentials');
         } else {
-          return User.update(
-            { token: randomToken },
-            { where: { 
-                email: email,
-                password: password
-            }});
+          bcrypt.compare(password, foundUser.password, (err, result) => {
+            if (result) {
+              return User.update(
+                { token: randomToken },
+                { where: {
+                    email: email,
+                    password: foundUser.password
+                }});
+            } else {
+              return res.status(401).send({ error: 'Invalid credentials'});
+            }
+          });
         }
       })
       .then(() => {
         return User.findOne(
           { where: { 
               email: email,
-              password: password
+              password: foundUser.password
           }});
       })
       .then(user => {

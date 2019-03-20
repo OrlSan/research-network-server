@@ -1,21 +1,14 @@
-var assert = require('assert');
-const factory = require('factory-girl').factory;
 
 const debug = require('debug')('bootstrap');
-const should = require('should');
-
-const chai = require('chai');
 const db = require('../db');
 
 before(() => {
   return db.sync()
   .then(() => {
+    const chai = require('chai');
     global.should = chai.Should();
     global.db = db;
 
-    const bcrypt = require('bcryptjs');
-    global.SALT_ROUNDS = 10;
-    global.bcrypt = bcrypt;
     const FactoryGirl = require('factory-girl');
     const path = require('path');
     const requireTree = require('require-tree');
@@ -47,6 +40,9 @@ before(() => {
     app.use('/institutions', institutionsRoutes);
     app.use('/projects', projectsRoutes);
     app.use('/publications', publicationsRoutes);
+
+    const bcrypt = require('bcryptjs');
+    global.bcrypt = bcrypt;
 
     User.create({
       name: 'Kimberly',

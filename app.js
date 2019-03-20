@@ -4,19 +4,13 @@ const db = require('./db');
 db.sync()
   .then(() => {
 
-    const bcrypt = require('bcryptjs');
-    global.SALT_ROUNDS = 10;
-    global.bcrypt = bcrypt;
+    /** Session **/
     const cors = require("cors");
-    const session = require('express-session');
     const passport = require('passport');
-    const LocalStrategy = require('passport-local').Strategy;
     const BearerStrategy = require('passport-http-bearer').Strategy;
-
-    var cookieParser = require('cookie-parser');
-
     global.passport = passport;
 
+    /** Testing **/
     const chai = require('chai');
     global.should = chai.Should();
     const FactoryGirl = require('factory-girl');
@@ -32,6 +26,11 @@ db.sync()
     });
     factory.models = models;
     global.factory = factory;
+
+    /** Hashing **/
+    const bcrypt = require('bcryptjs');
+    global.bcrypt = bcrypt;
+
     const bodyParser = require('body-parser');
     const express = require('express');
 
@@ -89,64 +88,14 @@ db.sync()
         console.log('Student created');
       });
 
-    // factory.createMany('user', 3)
-    // .then(users => {
-    // 	console.log('Created 3 users\n');
-    // });
-    // factory.createMany('area', 3)
-    // .then(areas => {
-    // 	console.log('Created 3 areas\n');
-    // });
-
-    // passport config
-    app.use(cookieParser('keyboard cat'));
-    app.use(session({
-      secret: 'keyboard cat',
-      saveUninitialized: true,
-      resave: false,
-      cookie: {
-        httpOnly: true
-      }
-    })); // session secret
-    app.use(passport.initialize());
-    app.use(passport.session());
-
-    passport.serializeUser(function (user, done) {
-      done(null, user);
-    });
-
-    // used to deserialize the user
-    passport.deserializeUser(function (id, done) {
-      done(null, user);
-    });
-
-    passport.use(new LocalStrategy(
-      {
-        usernameField: 'email',
-        passwordField: 'password',
-      },
-      function (email, password, done) {
-        User.findOne({ where: { email: email } })
-          .then(user => {
-            return done(null, user.dataValues);
-          })
-          .catch(err => {
-            console.log('ERR', err);
-            return done(err);
-          });
-      }
-    ));
 
     passport.use(new BearerStrategy(
       function (token, done) {
-        console.log('TOKEN', token);
-        //@TODO findOne by token
         User.findOne({ where: { token: token } })
           .then(user => {
             return done(null, user.dataValues);
           })
           .catch(err => {
-            console.log('ERR', err);
             return done(err);
           });
         return done(null, null);

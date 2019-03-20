@@ -21,7 +21,7 @@ router.route('/')
       .then(resultUser => {
         foundUser = resultUser.dataValues;
         if (foundUser === null) {
-          throw new Error('InvalidCredentials');
+          return res.status(401).send({ error: 'Invalid credentials'});
         } else {
           bcrypt.compare(password, foundUser.password, (err, result) => {
             if (result) {
@@ -55,4 +55,5 @@ router.route('/')
 			});
     })(req, res, next)
 });
+
 module.exports = router;

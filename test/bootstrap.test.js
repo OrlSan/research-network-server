@@ -48,13 +48,12 @@ before(() => {
     app.use('/projects', projectsRoutes);
     app.use('/publications', publicationsRoutes);
 
-    const hashedPassword = bcrypt.hashSync('kimkim', SALT_ROUNDS);
     User.create({
       name: 'Kimberly',
       lastname: 'BF',
       date_birth: '2019-02-25',
       email: 'kim@kim.com',
-      password:  hashedPassword,
+      password:  'kimkim',
       profile: 'ADMIN',
       token: 'asadasadasdasd'
     })

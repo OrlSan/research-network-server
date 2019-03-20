@@ -1,7 +1,6 @@
 module.exports = {
   
   isAuthenticated: (req, res, next)=> {
-    // req.isAthenticated
     if (req.headers.token) {
       User.findOne({ where: { token: req.headers.token }})
       .then(user => {

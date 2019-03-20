@@ -56,7 +56,23 @@ module.exports = (sequelize, type) => {
         models.User.belongsToMany(models.Project, {through: 'Projects_Members'}); // User can be member of many projects
     };
 
-    //@TODO create checkPassword
+    User.beforeCreate(function(model, options) {
+        return model.generateHash(model.password)
+        .then(hash => {
+            model.password = hash;
+        })
+        .catch(() => {
+            throw new Error('Error With Hashing Passwords'); 
+        });
+    });
+
+    User.prototype.generateHash = (password) => {
+        return bcrypt.hash(password, 10);
+    };
+
+    User.prototype.validatePassword = (password, user) => {
+        bcrypt.compare(password, user.password);
+    };
 
     User.prototype.basicFormat = function basicFormat() {
         return {

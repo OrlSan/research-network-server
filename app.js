@@ -53,16 +53,12 @@ db.sync()
 		app.use('/publications', publicationsRoutes);
 		app.use('/projects', projectsRoutes);
 
-		const hashedPassword1 = bcrypt.hashSync('kimkim', SALT_ROUNDS);
-		const hashedPassword2 = bcrypt.hashSync('luisluis', SALT_ROUNDS);
-		const hashedPassword3 = bcrypt.hashSync('ferfer', SALT_ROUNDS);
-
 		User.create({
 			name: 'Kimberly',
 			lastname: 'BF',
 			date_birth: '2019-02-25',
 			email: 'kim@kim.com',
-			password: hashedPassword1,
+			password: 'kimkim',
 			profile: 'ADMIN'
 		})
 		.then(() => {
@@ -74,7 +70,7 @@ db.sync()
 			lastname: 'CN',
 			date_birth: '2019-02-25',
 			email: 'luis@luis.com',
-			password: hashedPassword2,
+			password: 'luisluis',
 			profile: 'RESEARCHER'
 		})
 		.then(() => {
@@ -86,7 +82,7 @@ db.sync()
 			lastname: 'BF',
 			date_birth: '2019-02-25',
 			email: 'fer@fer.com',
-			password: hashedPassword3,
+			password: 'luisluis',
 			profile: 'STUDENT'
 		})
 		.then(() => {

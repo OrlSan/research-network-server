@@ -1,10 +1,10 @@
 // Bootstrap ORM and define relationships
 const Sequelize = require('sequelize');
-const UserModel = require('./models/User');
-const InstitutionModel = require('./models/Institution');
-const PublicationModel = require('./models/Publication');
-const AreaModel = require('./models/Area');
-const ProjectModel = require('./models/Project');
+const UserModel = require('./models/user');
+const InstitutionModel = require('./models/institution');
+const PublicationModel = require('./models/publication');
+const AreaModel = require('./models/area');
+const ProjectModel = require('./models/project');
 const debug = require('debug')('db');
 const path = require('path');
 const requireTree = require('require-tree');
